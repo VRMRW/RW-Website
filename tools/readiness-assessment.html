@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diagnóstico de Preparación — RW Capital y Estrategia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#154360;--navy2:#1A5276;--navy3:#0D2535;--navy4:#0a1e2d;
+  --gold:#C0392B;--gold2:#A93226;
+  --green:#27ae60;--amber:#f39c12;--red:#e74c3c;--blue:#2980b9;
+  --text:#2D2D2D;--text-dim:#6B7280;--text-muted:#9CA3AF;
+  --border:#E5E7EB;--border2:#D1D5DB;
+  --card:#ffffff;--card2:#F8F7F4;
+  --radius:10px;--radius-lg:18px;
+}
+body{background:#F8F7F4;color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;line-height:1.6}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 36px;border-bottom:1px solid var(--border);background:rgba(13,37,53,0.96);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.topbar__logo{display:flex;align-items:center;}
+.topbar__logo img{height:44px;background:rgba(255,255,255,0.92);padding:6px 12px;border-radius:7px;}
+.topbar__back{color:var(--text-dim);font-size:0.82rem;display:flex;align-items:center;gap:6px;text-decoration:none;transition:color .2s}
+.topbar__back:hover{color:#fff}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+
+/* LANDING */
+.hero{text-align:center;padding:80px 36px 64px;max-width:720px;margin:0 auto}
+.hero__label{display:inline-block;background:rgba(196,164,74,0.12);color:var(--gold);border:1px solid rgba(196,164,74,0.25);border-radius:20px;padding:5px 16px;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px}
+.hero__title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);line-height:1.15;margin-bottom:18px}
+.hero__title em{color:var(--gold);font-style:normal}
+.hero__sub{color:var(--text-dim);font-size:1rem;max-width:540px;margin:0 auto 40px;line-height:1.75}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-weight:700;font-size:0.92rem;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif}
+.btn--gold{background:var(--gold);color:var(--navy)}
+.btn--gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn--outline{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid var(--border2)}
+.btn--outline:hover{background:rgba(255,255,255,0.05);color:#fff}
+.btn--navy{background:var(--navy3);color:#fff;border:1px solid var(--border2)}
+.btn--navy:hover{background:var(--navy4)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:620px;margin:48px auto 0}
+.feature{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.feature__icon{font-size:1.6rem;margin-bottom:8px}
+.feature__text{font-size:0.78rem;color:var(--text-dim)}
+
+/* PROGRESS */
+.progress-wrap{max-width:720px;margin:0 auto;padding:24px 36px 20px}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-section{font-size:0.8rem;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase}
+.progress-count{font-size:0.78rem;color:var(--text-dim)}
+.progress-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;transition:width .5s ease}
+.category-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.cat-pill{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;border:1px solid var(--border);color:var(--text-muted);transition:all .2s}
+.cat-pill.done{background:rgba(39,174,96,0.12);border-color:rgba(39,174,96,0.3);color:var(--green)}
+.cat-pill.active{background:rgba(196,164,74,0.12);border-color:rgba(196,164,74,0.4);color:var(--gold)}
+
+/* FORM */
+.form-wrap{max-width:720px;margin:0 auto;padding:8px 36px 80px}
+.step-content{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px;margin-bottom:20px}
+.section-card__icon{font-size:2rem;margin-bottom:14px}
+.section-card__title{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;margin-bottom:6px}
+.section-card__desc{color:var(--text-dim);font-size:0.88rem;margin-bottom:28px}
+.question-block{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.question-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.question-text{font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:12px}
+.radio-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.radio-opt{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:11px 14px;cursor:pointer;transition:all .18s;user-select:none}
+.radio-opt:hover{border-color:rgba(196,164,74,0.35);background:rgba(196,164,74,0.04)}
+.radio-opt.selected{border-color:var(--gold);background:rgba(196,164,74,0.09)}
+.radio-opt input{display:none}
+.radio-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.25);flex-shrink:0;position:relative;transition:all .15s}
+.radio-opt.selected .radio-dot{border-color:var(--gold);background:var(--gold)}
+.radio-opt.selected .radio-dot::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:var(--navy)}
+.radio-opt span{font-size:0.82rem;color:var(--text-dim);line-height:1.3}
+.radio-opt.selected span{color:#fff}
+.form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding:0 2px}
+
+/* RESULTS */
+.results-wrap{max-width:900px;margin:0 auto;padding:40px 36px 80px}
+.results-grid-top{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;margin-bottom:52px}
+.score-ring{width:200px;height:200px;flex-shrink:0;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:12}
+.ring-fill{fill:none;stroke-width:12;stroke-linecap:round;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+.ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ring-number{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;line-height:1}
+.ring-label{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:4px}
+.ring-sublabel{font-size:0.72rem;color:var(--text-dim);margin-top:2px}
+.score-info__title{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:8px}
+.score-info__band{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:6px;font-weight:700;font-size:0.85rem;margin-bottom:16px}
+.score-info__desc{color:var(--text-dim);font-size:0.9rem;line-height:1.7;margin-bottom:20px}
+.score-info__actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* SECTION SCORES */
+.section-scores{margin-bottom:44px}
+.section-scores__title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
+.score-bars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.score-bar-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px}
+.score-bar-item__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.score-bar-item__name{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.8)}
+.score-bar-item__score{font-size:1.1rem;font-weight:700;font-family:'Playfair Display',serif}
+.score-bar-item__track{height:6px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden}
+.score-bar-item__fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* ROADMAP */
+.roadmap{margin-bottom:44px}
+.roadmap__title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
+.roadmap-items{display:flex;flex-direction:column;gap:14px}
+.roadmap-item{display:grid;grid-template-columns:48px 1fr auto;align-items:start;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;transition:border-color .2s}
+.roadmap-item:hover{border-color:var(--border2)}
+.roadmap-item__num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;flex-shrink:0}
+.roadmap-item__title{font-weight:700;color:#fff;font-size:0.92rem;margin-bottom:4px}
+.roadmap-item__desc{font-size:0.82rem;color:var(--text-dim);line-height:1.5}
+.impact-badge{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;letter-spacing:0.06em;white-space:nowrap;align-self:flex-start}
+.impact-badge--high{background:rgba(231,76,60,0.15);color:#e74c3c;border:1px solid rgba(231,76,60,0.3)}
+.impact-badge--medium{background:rgba(243,156,18,0.15);color:var(--amber);border:1px solid rgba(243,156,18,0.3)}
+.impact-badge--low{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3)}
+
+/* RADAR */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:44px}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.chart-card__title{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:18px}
+
+/* RESOURCES */
+.resources{margin-bottom:44px}
+.resources__title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
+.resource-group{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 24px;margin-bottom:12px}
+.resource-group__title{font-weight:700;font-size:0.88rem;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.resource-link{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.83rem;color:var(--text-dim);transition:color .15s;cursor:pointer}
+.resource-link:last-child{border-bottom:none;padding-bottom:0}
+.resource-link:hover{color:rgba(255,255,255,0.85)}
+.resource-type{font-size:0.66rem;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.resource-type--article{background:rgba(41,128,185,0.2);color:#5dade2}
+.resource-type--guide{background:rgba(196,164,74,0.2);color:var(--gold)}
+.resource-type--video{background:rgba(231,76,60,0.2);color:#e74c3c}
+
+/* CTA */
+.results-cta{background:linear-gradient(135deg,var(--navy2),var(--navy4));border:1px solid var(--border2);border-radius:var(--radius-lg);padding:52px 48px;text-align:center}
+.results-cta h2{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:12px}
+.results-cta p{color:var(--text-dim);font-size:0.92rem;max-width:520px;margin:0 auto 32px;line-height:1.7}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+@media(max-width:700px){
+  .results-grid-top{grid-template-columns:1fr;text-align:center}
+  .score-ring{margin:0 auto}
+  .score-bars,.charts-grid{grid-template-columns:1fr}
+  .radio-row{grid-template-columns:1fr}
+  .roadmap-item{grid-template-columns:40px 1fr;gap:12px}
+  .impact-badge{grid-column:2;margin-top:4px}
+  .topbar{padding:14px 16px}
+  .form-wrap,.progress-wrap,.results-wrap{padding-left:16px;padding-right:16px}
+  .hero{padding:60px 16px 48px}
+  .features{grid-template-columns:1fr}
+  .cta-btns{flex-direction:column}
+}
+
+/* ===== RW BRAND LIGHT THEME ===== */
+.topbar{background:#fff;border-bottom:1px solid #E5E7EB;}
+.topbar__back{color:#6B7280;}
+
+/* Hero keeps dark navy */
+.hero{background:linear-gradient(140deg,#0D2535 0%,#1A5276 60%,#154360 100%);max-width:100%;padding:80px 36px 64px;}
+.hero__label{background:rgba(192,57,43,0.12);color:#C0392B;border-color:rgba(192,57,43,0.3);}
+.hero__title{color:#fff;}
+.hero__title em{color:#C0392B;}
+.hero__sub{color:rgba(255,255,255,0.72);}
+.btn--gold{background:#154360;color:#fff;}
+.btn--gold:hover{background:#1A5276;transform:translateY(-1px);}
+.btn--outline{background:transparent;color:rgba(255,255,255,0.75);border-color:rgba(255,255,255,0.25);}
+.btn--outline:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.btn--navy{background:#fff;color:#154360;border-color:#E5E7EB;}
+.btn--navy:hover{background:#F8F7F4;}
+.feature{background:#fff;border-color:#E5E7EB;}
+.feature__text{color:#6B7280;}
+
+/* Progress */
+.progress-wrap{background:#fff;border-bottom:1px solid #E5E7EB;}
+.progress-section{color:#C0392B;}
+.progress-count{color:#6B7280;}
+.progress-track{background:#E5E7EB;}
+.progress-fill{background:linear-gradient(90deg,#154360,#1A5276);}
+.cat-pill{border-color:#E5E7EB;color:#9CA3AF;}
+.cat-pill.active{background:rgba(192,57,43,0.08);border-color:rgba(192,57,43,0.3);color:#C0392B;}
+.cat-pill.done{background:rgba(39,174,96,0.1);border-color:rgba(39,174,96,0.3);color:#27ae60;}
+
+/* Form cards */
+.section-card{background:#fff;border-color:#E5E7EB;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+.section-card__title{color:#154360;}
+.section-card__desc{color:#6B7280;}
+.question-block{border-bottom-color:#E5E7EB;}
+.question-text{color:#2D2D2D;}
+.radio-opt{background:#fff;border-color:#E5E7EB;}
+.radio-opt:hover{border-color:rgba(21,67,96,0.35);background:rgba(21,67,96,0.03);}
+.radio-opt.selected{border-color:#154360;background:rgba(21,67,96,0.06);}
+.radio-dot{border-color:#D1D5DB;}
+.radio-opt.selected .radio-dot{border-color:#154360;background:#154360;}
+.radio-opt.selected .radio-dot::after{background:#fff;}
+.radio-opt span{color:#6B7280;}
+.radio-opt.selected span{color:#154360;}
+
+/* Results */
+.ring-bg{stroke:#E5E7EB;}
+.ring-number{color:#154360;}
+.ring-label,.ring-sublabel{color:#6B7280;}
+.score-info__title{color:#154360;}
+.score-info__desc{color:#6B7280;}
+.section-scores__title,.roadmap__title,.resources__title{color:#9CA3AF;}
+.score-bar-item{background:#fff;border-color:#E5E7EB;}
+.score-bar-item__name{color:#2D2D2D;}
+.roadmap-item{background:#fff;border-color:#E5E7EB;}
+.roadmap-item:hover{border-color:#D1D5DB;}
+.roadmap-item__title{color:#154360;}
+.roadmap-item__desc{color:#6B7280;}
+.chart-card{background:#fff;border-color:#E5E7EB;}
+.chart-card__title{color:#6B7280;}
+.resource-group{background:#fff;border-color:#E5E7EB;}
+.resource-group__title{color:#154360;}
+.resource-link{border-bottom-color:#E5E7EB;color:#6B7280;}
+.resource-link:hover{color:#154360;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../herramientas.html" class="topbar__logo">
+    <img src="../images/rw-logo.png" alt="RW Capital y Estrategia">
+  </a>
+  <a href="../herramientas.html" class="topbar__back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Volver a Herramientas
+  </a>
+</div>
+
+<!-- LANDING -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <div class="hero__label">Diagnóstico Ejecutivo</div>
+    <h1 class="hero__title">¿Qué tan preparado está tu negocio para una <em>transacción exitosa</em>?</h1>
+    <p class="hero__sub">Responde algunas preguntas y recibe un diagnóstico personalizado de preparación para una futura venta, recapitalización o levantamiento de capital.</p>
+    <button class="btn btn--gold" onclick="startAssessment()">
+      Iniciar Diagnóstico
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="features">
+      <div class="feature"><div class="feature__icon">🎯</div><div class="feature__text">Diagnóstico por categoría con puntaje personalizado</div></div>
+      <div class="feature"><div class="feature__icon">🗺</div><div class="feature__text">Hoja de ruta de mejoras priorizadas</div></div>
+      <div class="feature"><div class="feature__icon">⏱</div><div class="feature__text">~10 minutos · 100% confidencial</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ASSESSMENT -->
+<div class="page" id="page-assessment">
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <div class="progress-section" id="prog-section">Preparación Financiera</div>
+      <div class="progress-count"><span id="prog-cur">1</span> / <span id="prog-total">6</span></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:16%"></div></div>
+    <div class="category-pills" id="cat-pills"></div>
+  </div>
+
+  <div class="form-wrap">
+    <!-- steps injected here -->
+    <div id="steps-container"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="page" id="page-results">
+  <div class="results-wrap">
+
+    <div class="results-grid-top">
+      <div class="score-ring">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <circle class="ring-bg" cx="100" cy="100" r="90"/>
+          <circle class="ring-fill" id="ring-arc" cx="100" cy="100" r="90" stroke="var(--gold)"/>
+        </svg>
+        <div class="ring-text">
+          <div class="ring-number" id="ring-num">0</div>
+          <div class="ring-label">/ 100</div>
+          <div class="ring-sublabel" id="ring-band-short" style="margin-top:6px;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase"></div>
+        </div>
+      </div>
+
+      <div class="score-info">
+        <h1 class="score-info__title">Preparación para Transacción</h1>
+        <div class="score-info__band" id="band-badge"></div>
+        <p class="score-info__desc" id="band-desc"></p>
+        <div class="score-info__actions">
+          <a href="../contact.html" class="btn btn--gold">Hablar con un Asesor</a>
+          <button class="btn btn--navy" onclick="restartAssessment()">Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION SCORES -->
+    <div class="section-scores">
+      <div class="section-scores__title">Puntaje por Categoría</div>
+      <div class="score-bars" id="score-bars"></div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-card__title">Perfil de Preparación</div>
+        <canvas id="radarChart" style="max-height:280px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card__title">Brechas Prioritarias</div>
+        <canvas id="gapChart" style="max-height:280px"></canvas>
+      </div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div class="roadmap">
+      <div class="roadmap__title">Hoja de Ruta Personalizada</div>
+      <div class="roadmap-items" id="roadmap-items"></div>
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="resources">
+      <div class="resources__title">Recursos de Aprendizaje</div>
+      <div id="resource-groups"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="results-cta">
+      <h2>¿Listo para Dar el Siguiente Paso?</h2>
+      <p>Agenda una conversación confidencial con un asesor de RW para discutir tus resultados, identificar oportunidades de mejora y explorar tus opciones estratégicas. Sin compromiso — solo orientación práctica adaptada a tus objetivos.</p>
+      <div class="cta-btns">
+        <a href="../contact.html" class="btn btn--gold">Agendar Conversación Confidencial</a>
+        <button class="btn btn--outline" onclick="restartAssessment()">Hacer Nuevamente</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ====== DATA ======
+const CATEGORIES = [
+  {
+    id:'financial', icon:'📊', name:'Preparación Financiera',
+    desc:'La calidad de los reportes financieros es crítica para cualquier proceso de due diligence.',
+    questions:[
+      { text:'¿Con qué frecuencia generas reportes financieros formales?',
+        opts:['Mensualmente con cierre formal','Trimestralmente','Anualmente o cuando los necesito','No tengo reportes regulares'],
+        scores:[3,2,1,0] },
+      { text:'¿Tus estados financieros han sido auditados por un despacho externo?',
+        opts:['Sí, auditoría anual completa','Revisión externa pero sin auditoría','No, solo internos','No tenemos estados formales'],
+        scores:[3,2,1,0] },
+      { text:'¿Tienes un proceso formal de presupuesto y proyecciones?',
+        opts:['Presupuesto anual + proyecciones actualizadas','Presupuesto anual básico','Proyecciones ocasionales','Sin proceso formal'],
+        scores:[3,2,1,0] },
+      { text:'¿Tienes un dashboard de KPIs financieros y operativos?',
+        opts:['Dashboard formal con KPIs clave','Seguimiento básico de algunas métricas','Seguimiento informal','Sin seguimiento sistemático'],
+        scores:[3,2,1,0] },
+    ]
+  },
+  {
+    id:'management', icon:'👥', name:'Equipo Directivo',
+    desc:'Los compradores valoran negocios que no dependen exclusivamente del fundador.',
+    questions:[
+      { text:'¿El negocio puede operar normalmente sin tu presencia diaria?',
+        opts:['Sí, hay liderazgo independiente en todas las áreas','En la mayoría de las áreas, no en ventas','En algunas áreas','No, depende de mí en casi todo'],
+        scores:[3,2,1,0] },
+      { text:'¿Tienes un segundo nivel de gerencia con autoridad real?',
+        opts:['Sí, dirección fuerte y experimentada','Algunas posiciones clave cubiertas','Solo primer nivel, sin segundo','No tengo equipo directivo formal'],
+        scores:[3,2,1,0] },
+      { text:'¿Hay un plan de sucesión o reemplazo para posiciones clave?',
+        opts:['Plan documentado y comunicado','En proceso de desarrollo','Identificado pero no documentado','No existe'],
+        scores:[3,2,1,0] },
+      { text:'¿Cómo describes la experiencia de tu equipo directivo?',
+        opts:['Experimentado con track record en industria','Buen equipo en desarrollo','Equipo con brechas importantes','Equipo muy básico o inexperiente'],
+        scores:[3,2,1,0] },
+    ]
+  },
+  {
+    id:'growth', icon:'📈', name:'Crecimiento',
+    desc:'La visibilidad del pipeline y la trayectoria de crecimiento son factores clave de valuación.',
+    questions:[
+      { text:'¿Cuál ha sido tu crecimiento de ingresos en los últimos 3 años?',
+        opts:['Más del 20% anual','10–20% anual','5–10% anual','Menor al 5% o negativo'],
+        scores:[3,2,1,0] },
+      { text:'¿Cuánta visibilidad tienes sobre tus ingresos futuros?',
+        opts:['Pipeline formal + contratos firmados = +12 meses','Buena visibilidad a 6 meses','Visibilidad limitada a 3 meses','Sin pipeline formal'],
+        scores:[3,2,1,0] },
+      { text:'¿Tu crecimiento es principalmente orgánico o requiere capex elevado?',
+        opts:['Crecimiento orgánico escalable de bajo costo','Orgánico con inversión moderada','Crecimiento requiere capex significativo','Crecimiento limitado por capacidad'],
+        scores:[3,2,1,0] },
+      { text:'¿Tienes una estrategia clara de crecimiento para los próximos 3–5 años?',
+        opts:['Estrategia documentada, validada y en ejecución','Estrategia definida pero no formalizada','Ideas de crecimiento sin plan concreto','Sin estrategia formal'],
+        scores:[3,2,1,0] },
+    ]
+  },
+  {
+    id:'customers', icon:'🤝', name:'Clientes',
+    desc:'La diversificación y fidelidad de la base de clientes reduce el riesgo percibido.',
+    questions:[
+      { text:'¿Qué proporción representan tus 3 clientes más grandes del total de ingresos?',
+        opts:['Menos del 20%','Entre 20–40%','Entre 40–60%','Más del 60%'],
+        scores:[3,2,1,0] },
+      { text:'¿Cuál es tu tasa de retención anual de clientes?',
+        opts:['Más del 90%','80–90%','70–80%','Menos del 70%'],
+        scores:[3,2,1,0] },
+      { text:'¿Los clientes firman contratos formales con términos y plazos definidos?',
+        opts:['Contratos plurianuales en la mayoría de casos','Contratos anuales renovables','Contratos ocasionales o de corto plazo','Sin contratos formales'],
+        scores:[3,2,1,0] },
+      { text:'¿Mides la satisfacción de clientes de manera formal?',
+        opts:['NPS o encuestas periódicas con seguimiento','Algunos mecanismos informales','Solo feedback anecdótico','No medimos satisfacción'],
+        scores:[3,2,1,0] },
+    ]
+  },
+  {
+    id:'operations', icon:'⚙️', name:'Operaciones',
+    desc:'Los procesos documentados y los sistemas tecnológicos reducen el riesgo operativo.',
+    questions:[
+      { text:'¿Tus procesos operativos clave están documentados?',
+        opts:['Manuales y SOPs actualizados en todas las áreas','Documentados en áreas críticas','Documentación parcial e informal','Sin documentación formal'],
+        scores:[3,2,1,0] },
+      { text:'¿Utilizas un sistema ERP o plataforma de gestión integrada?',
+        opts:['ERP implementado y bien utilizado','Software de gestión básico','Solo herramientas de contabilidad','Hojas de cálculo o procesos manuales'],
+        scores:[3,2,1,0] },
+      { text:'¿Tienes un CRM para gestión comercial y de clientes?',
+        opts:['CRM implementado y adoptado','CRM básico con uso parcial','Seguimiento en Excel o correo','Sin gestión formal de CRM'],
+        scores:[3,2,1,0] },
+      { text:'¿Cómo están la ciberseguridad y el cumplimiento normativo?',
+        opts:['Políticas formales + auditorías periódicas','Medidas básicas implementadas','Conciencia pero sin formalizar','Sin políticas formales'],
+        scores:[3,2,1,0] },
+    ]
+  },
+  {
+    id:'legal', icon:'⚖️', name:'Legal y Gobernanza',
+    desc:'Una estructura legal limpia y documentada es indispensable para cerrar una transacción.',
+    questions:[
+      { text:'¿La propiedad intelectual del negocio está formalmente registrada y protegida?',
+        opts:['IP registrada y protegida formalmente','IP identificada, registro en proceso','IP no protegida formalmente','No aplica o no tenemos IP'],
+        scores:[3,2,1,0] },
+      { text:'¿Tienes contratos formales con todos los empleados y socios clave?',
+        opts:['Contratos actualizados con cláusulas de confidencialidad y no competencia','Contratos básicos sin cláusulas específicas','Contratos para algunos, no todos','Sin contratos formales'],
+        scores:[3,2,1,0] },
+      { text:'¿Existe un acuerdo de socios o shareholders agreement actualizado?',
+        opts:['Acuerdo completo y actualizado','Acuerdo básico existente','Acuerdo desactualizado o incompleto','Sin acuerdo de socios'],
+        scores:[3,2,1,0] },
+      { text:'¿Cómo es la gobernanza corporativa de la empresa?',
+        opts:['Consejo activo con independientes y actas regulares','Consejo informal con reuniones periódicas','Gobernanza muy básica','Sin estructura de gobernanza'],
+        scores:[3,2,1,0] },
+    ]
+  },
+];
+
+// ====== STATE ======
+let currentCat = 0;
+let answers = {}; // {catId_qIdx: score}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startAssessment(){
+  buildSteps();
+  showPage('page-assessment');
+  goToCategory(0);
+}
+
+function restartAssessment(){
+  answers = {};
+  currentCat = 0;
+  showPage('page-landing');
+}
+
+function buildSteps(){
+  const container = document.getElementById('steps-container');
+  container.innerHTML = '';
+  const pills = document.getElementById('cat-pills');
+  pills.innerHTML = CATEGORIES.map((c,i) => `<span class="cat-pill" id="pill-${c.id}">${c.name}</span>`).join('');
+  document.getElementById('prog-total').textContent = CATEGORIES.length;
+
+  CATEGORIES.forEach((cat, ci) => {
+    const div = document.createElement('div');
+    div.className = 'step-content hidden';
+    div.id = `step-${ci}`;
+    div.innerHTML = `
+      <div class="section-card">
+        <div class="section-card__icon">${cat.icon}</div>
+        <div class="section-card__title">${cat.name}</div>
+        <div class="section-card__desc">${cat.desc}</div>
+        ${cat.questions.map((q,qi) => `
+          <div class="question-block">
+            <div class="question-text">${q.text}</div>
+            <div class="radio-row">
+              ${q.opts.map((opt,oi) => `
+                <label class="radio-opt" onclick="selectOpt(this,'${cat.id}',${qi},${q.scores[oi]})">
+                  <input type="radio" name="${cat.id}_${qi}"/>
+                  <div class="radio-dot"></div>
+                  <span>${opt}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="form-nav">
+        ${ci > 0 ? `<button class="btn btn--navy" onclick="goToCategory(${ci-1})">← Anterior</button>` : '<span></span>'}
+        ${ci < CATEGORIES.length-1
+          ? `<button class="btn btn--gold" onclick="goToCategory(${ci+1})">Siguiente →</button>`
+          : `<button class="btn btn--gold" onclick="calculateResults()">Ver Resultados →</button>`}
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function selectOpt(el, catId, qIdx, score){
+  const name = `${catId}_${qIdx}`;
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => r.closest('.radio-opt').classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  answers[`${catId}_${qIdx}`] = score;
+}
+
+function goToCategory(n){
+  document.querySelectorAll('.step-content').forEach(s => s.classList.add('hidden'));
+  document.getElementById(`step-${n}`).classList.remove('hidden');
+  currentCat = n;
+  // progress
+  const pct = ((n+1) / CATEGORIES.length) * 100;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-cur').textContent = n + 1;
+  document.getElementById('prog-section').textContent = CATEGORIES[n].name;
+  // pills
+  CATEGORIES.forEach((c,i) => {
+    const pill = document.getElementById(`pill-${c.id}`);
+    pill.className = 'cat-pill' + (i < n ? ' done' : i === n ? ' active' : '');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function getCatScore(catId){
+  const cat = CATEGORIES.find(c => c.id === catId);
+  let total = 0, max = 0;
+  cat.questions.forEach((q,qi) => {
+    const key = `${catId}_${qi}`;
+    total += (answers[key] ?? 1);
+    max += 3;
+  });
+  return Math.round((total / max) * 100);
+}
+
+function calculateResults(){
+  const catScores = {};
+  CATEGORIES.forEach(c => { catScores[c.id] = getCatScore(c.id); });
+  const overall = Math.round(Object.values(catScores).reduce((a,b)=>a+b,0) / CATEGORIES.length);
+
+  showPage('page-results');
+  window.scrollTo({top:0,behavior:'smooth'});
+  renderResults(overall, catScores);
+}
+
+function renderResults(overall, catScores){
+  // Animate score ring
+  setTimeout(() => {
+    let n = 0;
+    const iv = setInterval(() => {
+      n = Math.min(n + Math.ceil(overall/30), overall);
+      document.getElementById('ring-num').textContent = n;
+      if(n >= overall) clearInterval(iv);
+    }, 30);
+    const circ = 2 * Math.PI * 90; // 565.5
+    const offset = circ - (overall/100) * circ;
+    const arc = document.getElementById('ring-arc');
+    arc.style.strokeDashoffset = offset;
+    arc.style.stroke = overall>=90?'var(--green)':overall>=70?'var(--gold)':overall>=50?'var(--amber)':'var(--red)';
+  }, 200);
+
+  // Band
+  const bands = [
+    {min:90, short:'EXCELENTE', label:'Excelente', color:'rgba(39,174,96,0.15)', text:'#2ecc71', border:'rgba(39,174,96,0.3)',
+      desc:'Tu empresa muestra un perfil de preparación excepcional. Estás bien posicionado para iniciar un proceso de M&A o levantamiento de capital en el corto plazo con alta probabilidad de éxito.'},
+    {min:70, short:'SÓLIDO', label:'Sólido', color:'rgba(196,164,74,0.15)', text:'var(--gold)', border:'rgba(196,164,74,0.3)',
+      desc:'Tu empresa tiene una base sólida con áreas específicas de mejora. Con algunos meses de preparación enfocada, estarás en excelente posición para una transacción.'},
+    {min:50, short:'EN DESARROLLO', label:'En Desarrollo', color:'rgba(243,156,18,0.15)', text:'var(--amber)', border:'rgba(243,156,18,0.3)',
+      desc:'Existe potencial claro, pero hay brechas importantes que deben atenderse antes de iniciar un proceso formal. Un plan de preparación de 12–24 meses puede mejorar significativamente tu posición.'},
+    {min:0, short:'ETAPA TEMPRANA', label:'Etapa Temprana', color:'rgba(231,76,60,0.15)', text:'var(--red)', border:'rgba(231,76,60,0.3)',
+      desc:'Tu empresa requiere preparación sustancial antes de estar lista para una transacción. Esto no es una limitación permanente — muchos negocios exitosos han recorrido este camino.'},
+  ];
+  const band = bands.find(b => overall >= b.min);
+  document.getElementById('ring-band-short').textContent = band.short;
+  document.getElementById('ring-band-short').style.color = band.text;
+  document.getElementById('band-badge').textContent = band.label;
+  document.getElementById('band-badge').style.cssText = `background:${band.color};color:${band.text};border:1px solid ${band.border}`;
+  document.getElementById('band-desc').textContent = band.desc;
+
+  // Section score bars
+  const scoreBarWrap = document.getElementById('score-bars');
+  scoreBarWrap.innerHTML = CATEGORIES.map(c => {
+    const s = catScores[c.id];
+    const color = s>=80?'#2ecc71':s>=60?'var(--gold)':s>=40?'var(--amber)':'var(--red)';
+    return `<div class="score-bar-item">
+      <div class="score-bar-item__header">
+        <div class="score-bar-item__name">${c.icon} ${c.name}</div>
+        <div class="score-bar-item__score" style="color:${color}">${s}</div>
+      </div>
+      <div class="score-bar-item__track">
+        <div class="score-bar-item__fill" style="width:0;background:${color}" data-w="${s}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+  setTimeout(() => {
+    scoreBarWrap.querySelectorAll('.score-bar-item__fill').forEach(el => { el.style.width = el.dataset.w; });
+  }, 300);
+
+  // Charts
+  const labels = CATEGORIES.map(c => c.name);
+  const vals = CATEGORIES.map(c => catScores[c.id]);
+
+  if(window._radar) window._radar.destroy();
+  const rCtx = document.getElementById('radarChart').getContext('2d');
+  window._radar = new Chart(rCtx, {
+    type:'radar',
+    data:{
+      labels,
+      datasets:[{
+        data:vals,
+        backgroundColor:'rgba(196,164,74,0.12)',
+        borderColor:'rgba(196,164,74,0.85)',
+        borderWidth:2,
+        pointBackgroundColor:'rgba(196,164,74,1)',
+        pointRadius:4,
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{r:{min:0,max:100,grid:{color:'rgba(0,0,0,0.06)'},angleLines:{color:'rgba(0,0,0,0.06)'},ticks:{display:false},pointLabels:{color:'#6B7280',font:{size:10,family:'Inter'}}}}
+    }
+  });
+
+  // Gap chart (100 - score, sorted)
+  const sorted = CATEGORIES.map(c => ({name:c.name, gap:100-catScores[c.id], score:catScores[c.id]})).sort((a,b)=>b.gap-a.gap);
+  if(window._gap) window._gap.destroy();
+  const gCtx = document.getElementById('gapChart').getContext('2d');
+  window._gap = new Chart(gCtx, {
+    type:'bar',
+    data:{
+      labels:sorted.map(s=>s.name),
+      datasets:[{
+        label:'Brecha',
+        data:sorted.map(s=>s.gap),
+        backgroundColor:sorted.map(s=>s.gap>50?'rgba(231,76,60,0.7)':s.gap>30?'rgba(243,156,18,0.7)':'rgba(39,174,96,0.6)'),
+        borderRadius:4,
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Brecha: ${c.raw} pts`},backgroundColor:'rgba(13,37,53,0.95)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1}},
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#9CA3AF',font:{size:10}},max:100},
+        y:{grid:{display:false},ticks:{color:'#9CA3AF',font:{size:10}}}
+      }
+    }
+  });
+
+  // Roadmap
+  const roadmapDefs = [
+    {id:'financial', title:'Implementar auditoría financiera', cond: s=>s<70, impact:'high', desc:'Los estados auditados son el primer filtro de cualquier comprador institucional. Sin ellos, el proceso de due diligence se complica significativamente.'},
+    {id:'management', title:'Reducir dependencia del fundador', cond: s=>s<75, impact:'high', desc:'Construir un equipo directivo independiente que pueda operar el negocio sin ti es el factor de valuación más impactante en empresas medianas.'},
+    {id:'customers', title:'Diversificar base de clientes', cond: s=>s<70, impact:'high', desc:'Alta concentración de clientes es uno de los principales factores de descuento de valuación. Reducirla mejora directamente el perfil de riesgo.'},
+    {id:'legal', title:'Formalizar gobernanza corporativa', cond: s=>s<75, impact:'medium', desc:'Contratos actualizados, acuerdo de socios y estructura de gobernanza clara son indispensables para cerrar cualquier transacción limpiamente.'},
+    {id:'operations', title:'Documentar procesos operativos clave', cond: s=>s<75, impact:'medium', desc:'Los SOPs y sistemas tecnológicos demuestran escalabilidad y reducen la percepción de riesgo operativo post-transacción.'},
+    {id:'growth', title:'Desarrollar pipeline y proyecciones formales', cond: s=>s<70, impact:'medium', desc:'La visibilidad de ingresos futuros y una estrategia de crecimiento clara impactan directamente las proyecciones financieras que los compradores usan para valuar.'},
+  ];
+  const roadmapItems = roadmapDefs.filter(r => r.cond(catScores[r.id])).slice(0,5);
+  const roadmapWrap = document.getElementById('roadmap-items');
+  if(roadmapItems.length === 0){
+    roadmapWrap.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-dim);font-size:0.9rem">🎯 Tu empresa muestra una preparación excelente en todas las categorías evaluadas. Estás bien posicionado para iniciar un proceso de transacción.</div>`;
+  } else {
+    const impactColors = {high:'rgba(26,82,118,0.4)',medium:'rgba(196,164,74,0.25)',low:'rgba(39,174,96,0.2)'};
+    roadmapWrap.innerHTML = roadmapItems.map((r,i) => `
+      <div class="roadmap-item">
+        <div class="roadmap-item__num" style="background:${impactColors[r.impact]};color:#fff">${i+1}</div>
+        <div>
+          <div class="roadmap-item__title">${r.title}</div>
+          <div class="roadmap-item__desc">${r.desc}</div>
+        </div>
+        <span class="impact-badge impact-badge--${r.impact}">${r.impact==='high'?'Impacto Alto':r.impact==='medium'?'Impacto Medio':'Impacto Bajo'}</span>
+      </div>`).join('');
+  }
+
+  // Resources
+  const allResources = [
+    {cond: s=>s.financial<75, title:'Reportes Financieros', links:[
+      {type:'guide',text:'Estados financieros que los compradores esperan'},
+      {type:'article',text:'Por qué importa la Calidad de Earnings (QoE)'},
+      {type:'article',text:'Cómo preparar tu empresa para due diligence financiero'},
+    ]},
+    {cond: s=>s.management<75, title:'Equipo y Liderazgo', links:[
+      {type:'article',text:'Construir un equipo directivo que los compradores confíen'},
+      {type:'video',text:'Preparar tu negocio para operar sin ti'},
+      {type:'guide',text:'Planes de sucesión en empresas medianas'},
+    ]},
+    {cond: s=>s.customers<75, title:'Base de Clientes', links:[
+      {type:'article',text:'Cómo la concentración de clientes afecta tu valuación'},
+      {type:'guide',text:'Estrategias para diversificar tu base de clientes'},
+    ]},
+    {cond: s=>s.legal<75, title:'Gobernanza y Legal', links:[
+      {type:'guide',text:'Checklist legal para prepararse para una venta'},
+      {type:'article',text:'Acuerdos de socios: qué incluir y qué evitar'},
+    ]},
+  ];
+  const relevantResources = allResources.filter(r => r.cond(catScores));
+  const rgWrap = document.getElementById('resource-groups');
+  if(relevantResources.length === 0){
+    rgWrap.innerHTML = `<div style="color:var(--text-dim);font-size:0.85rem;padding:20px">Tu perfil de preparación es sólido. Consulta con un asesor de RW para explorar las opciones de transacción disponibles para tu empresa.</div>`;
+  } else {
+    rgWrap.innerHTML = relevantResources.map(r => `
+      <div class="resource-group">
+        <div class="resource-group__title">📚 ${r.title}</div>
+        ${r.links.map(l => `
+          <div class="resource-link">
+            <span class="resource-type resource-type--${l.type}">${l.type==='article'?'Artículo':l.type==='guide'?'Guía':'Video'}</span>
+            ${l.text}
+          </div>`).join('')}
+      </div>`).join('');
+  }
+}
+</script>
+</body>
+</html>

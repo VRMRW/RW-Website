@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herramientas — RW Capital y Estrategia</title>
+  <meta name="description" content="Diagnósticos interactivos, gratuitos y confidenciales de RW Capital y Estrategia para fundadores y directivos que evalúan decisiones estratégicas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .tools-hero {
+      background: linear-gradient(140deg, #0D2535 0%, #1A5276 55%, #154360 100%);
+      padding: 120px 0 90px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tools-hero__grid-bg {
+      position: absolute;
+      top: 0; right: 0;
+      width: 480px; height: 480px;
+      opacity: 0.06;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.5) 0, rgba(255,255,255,0.5) 1px, transparent 1px, transparent 48px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0, rgba(255,255,255,0.5) 1px, transparent 1px, transparent 48px);
+    }
+    .tools-hero__accent {
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(192,57,43,0.18) 0%, transparent 70%);
+    }
+    .tools-hero__label {
+      display: inline-block;
+      background: rgba(196,164,74,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(196,164,74,0.3);
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .tools-hero__title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: #fff;
+      margin-bottom: 24px;
+      line-height: 1.12;
+    }
+    .tools-hero__title em {
+      color: var(--accent);
+      font-style: normal;
+    }
+    .tools-hero__sub {
+      color: rgba(255,255,255,0.68);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      max-width: 600px;
+    }
+    .tools-hero__badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .tools-hero__badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 30px;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .tools-hero__badge svg { flex-shrink: 0; }
+
+    /* Tool cards */
+    .tool-card {
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 44px;
+      display: flex;
+      gap: 44px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      transition: box-shadow 0.25s, transform 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+    }
+    .tool-card:hover {
+      box-shadow: 0 16px 52px rgba(21,67,96,0.13);
+      transform: translateY(-3px);
+    }
+    .tool-card__icon-wrap {
+      width: 84px;
+      height: 84px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #0D2535, #1A5276);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      position: relative;
+    }
+    .tool-card__num {
+      position: absolute;
+      top: -8px; right: -8px;
+      width: 22px; height: 22px;
+      background: #C0392B;
+      border-radius: 50%;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0;
+    }
+    .tool-card__body { flex: 1; }
+    .tool-card__tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #C0392B;
+      margin-bottom: 10px;
+    }
+    .tool-card__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #154360;
+      margin-bottom: 12px;
+    }
+    .tool-card__desc {
+      color: #6B7280;
+      font-size: 0.93rem;
+      line-height: 1.78;
+      max-width: 560px;
+      margin-bottom: 20px;
+    }
+    .tool-card__meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .tool-card__meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: #6B7280;
+    }
+    .tool-card__cta {
+      flex-shrink: 0;
+      align-self: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1A5276;
+      white-space: nowrap;
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      background: linear-gradient(135deg, #0D2535, #154360);
+      padding: 56px 0;
+    }
+    .stats-strip__inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+    .stats-strip__item {
+      text-align: center;
+      padding: 28px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+    }
+    .stats-strip__num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .stats-strip__label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Why free */
+    .why-section {
+      padding: 90px 0;
+      background: #F8F7F4;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .why-points {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .why-point {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .why-point__dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #154360, #1A5276);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .why-point__dot svg { color: #fff; }
+    .why-point__title {
+      font-weight: 700;
+      color: #154360;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+    .why-point__text {
+      font-size: 0.88rem;
+      color: #6B7280;
+      line-height: 1.7;
+    }
+
+    /* Logo showcase in the "about" area */
+    .logo-showcase {
+      background: linear-gradient(135deg, #154360, #1A5276);
+      border-radius: 16px;
+      padding: 52px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 360px;
+    }
+    .logo-showcase img {
+      height: 90px;
+      background: rgba(255,255,255,0.92);
+      padding: 14px 20px;
+      border-radius: 10px;
+      margin-bottom: 28px;
+    }
+    .logo-showcase__tagline {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .logo-showcase__quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.5;
+      margin: 16px 0;
+      max-width: 280px;
+    }
+
+    @media (max-width: 900px) {
+      .tool-card { flex-direction: column; gap: 24px; }
+      .tool-card__cta { align-self: flex-start; }
+      .stats-strip__inner { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+    @media (max-width: 600px) {
+      .tool-card { padding: 28px; }
+      .tools-hero { padding: 100px 0 60px; }
+      .stats-strip__inner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body class="page-herramientas">
+
+<!-- NAVEGACIÓN -->
+<nav class="nav solid" id="main-nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="images/rw-logo.png" alt="RW Capital y Estrategia" class="nav__logo-img" />
+      </a>
+      <ul class="nav__menu" id="nav-menu">
+        <li class="nav__item"><a href="index.html" class="nav__link">Inicio</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="about.html" class="nav__link">Nosotros <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+          <div class="nav__dropdown">
+            <a href="about.html#our-story" class="nav__dropdown-link">Nuestra Historia</a>
+            <a href="about.html#team" class="nav__dropdown-link">Equipo</a>
+            <a href="about.html#careers" class="nav__dropdown-link">Únete</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="services.html" class="nav__link">Servicios <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+          <div class="nav__dropdown">
+            <a href="services.html#ma" class="nav__dropdown-link">M&amp;A</a>
+            <a href="services.html#advisory" class="nav__dropdown-link">Advisory</a>
+            <a href="services.html#fund-management" class="nav__dropdown-link">Fund Management</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="industries.html" class="nav__link">Industrias <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+          <div class="nav__dropdown">
+            <a href="industries.html#financial-services" class="nav__dropdown-link">Servicios Financieros</a>
+            <a href="industries.html#technology" class="nav__dropdown-link">Tecnología</a>
+            <a href="industries.html#industrials" class="nav__dropdown-link">Industriales</a>
+            <a href="industries.html#education" class="nav__dropdown-link">Educación</a>
+            <a href="industries.html#other" class="nav__dropdown-link">Otros</a>
+          </div>
+        </li>
+        <li class="nav__item"><a href="case-studies.html" class="nav__link">Casos de Éxito</a></li>
+        <li class="nav__item"><a href="partners.html" class="nav__link">Partners</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="insights.html" class="nav__link">Publicaciones <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+          <div class="nav__dropdown">
+            <a href="insights.html#feed" class="nav__dropdown-link">Feed de LinkedIn</a>
+            <a href="insights.html#podcast" class="nav__dropdown-link">Podcast</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="herramientas.html" class="nav__link active">Herramientas <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+          <div class="nav__dropdown">
+            <a href="tools/valuation-simulator.html" class="nav__dropdown-link">Simulador de Valor</a>
+            <a href="tools/market-dashboard.html" class="nav__dropdown-link">Dashboard de Mercado</a>
+            <a href="tools/readiness-assessment.html" class="nav__dropdown-link">Diagnóstico de Preparación</a>
+          </div>
+        </li>
+        <li class="nav__item"><a href="contact.html" class="nav__link nav__cta">Contáctenos</a></li>
+      </ul>
+      <div class="lang-toggle"><span class="lang-toggle__opt lang-toggle__opt--active">ES</span><span class="lang-toggle__sep"></span><a href="en/index.html" class="lang-toggle__opt">EN</a></div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="tools-hero">
+  <div class="tools-hero__grid-bg"></div>
+  <div class="tools-hero__accent"></div>
+  <div class="container">
+    <div style="max-width:680px;position:relative;z-index:1;">
+      <div class="tools-hero__label">RW Toolkit</div>
+      <h1 class="tools-hero__title">Herramientas para<br><em>Fundadores y Directivos</em></h1>
+      <p class="tools-hero__sub">Diagnósticos interactivos, gratuitos y confidenciales diseñados por el equipo de RW para que entiendas el valor y la preparación de tu empresa antes de tomar las decisiones estratégicas más importantes.</p>
+      <div class="tools-hero__badges">
+        <span class="tools-hero__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Completamente gratuito
+        </span>
+        <span class="tools-hero__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          100% confidencial
+        </span>
+        <span class="tools-hero__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Sin registro requerido
+        </span>
+        <span class="tools-hero__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Resultados inmediatos
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS LIST -->
+<section class="section section--light" style="padding-top:72px;padding-bottom:72px;">
+  <div class="container">
+    <div class="section__header fade-up" style="margin-bottom:52px;">
+      <span class="section__label">Nuestras Herramientas</span>
+      <h2 class="section__title--dark">Tres Diagnósticos, Una Decisión Mejor Informada</h2>
+      <p class="section__subtitle">Cada herramienta fue desarrollada con la misma metodología que RW aplica en sus transacciones, ahora al alcance de cualquier fundador.</p>
+    </div>
+
+    <!-- Tool 1 -->
+    <a href="tools/valuation-simulator.html" class="tool-card fade-up" style="text-decoration:none;">
+      <div class="tool-card__icon-wrap">
+        <span>📊</span>
+        <div class="tool-card__num">01</div>
+      </div>
+      <div class="tool-card__body">
+        <div class="tool-card__tag">Simulador de Valor</div>
+        <h3 class="tool-card__title">¿Cuánto vale tu empresa?</h3>
+        <p class="tool-card__desc">Descubre los factores que los inversionistas y compradores evalúan para determinar la valuación de tu empresa. Obtén un rango indicativo de múltiplos EBITDA y un diagnóstico personalizado de tus fortalezas y áreas de mejora antes de una transacción.</p>
+        <div class="tool-card__meta">
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ~10 minutos
+          </span>
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            Múltiplos EBITDA
+          </span>
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Diagnóstico personalizado
+          </span>
+        </div>
+      </div>
+      <div class="tool-card__cta">
+        Iniciar
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Tool 2 -->
+    <a href="tools/market-dashboard.html" class="tool-card fade-up" style="text-decoration:none;">
+      <div class="tool-card__icon-wrap">
+        <span>📈</span>
+        <div class="tool-card__num">02</div>
+      </div>
+      <div class="tool-card__body">
+        <div class="tool-card__tag">Dashboard de Mercado</div>
+        <h3 class="tool-card__title">¿Cómo está el mercado de M&amp;A hoy?</h3>
+        <p class="tool-card__desc">Explora múltiplos de valuación actuales por industria, tendencias históricas y las dinámicas de mercado que influyen en el precio de las transacciones. Referencia de datos del mercado M&A en México y LATAM con visualizaciones interactivas.</p>
+        <div class="tool-card__meta">
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Datos por sector
+          </span>
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+            Gráficas interactivas
+          </span>
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Tendencias históricas
+          </span>
+        </div>
+      </div>
+      <div class="tool-card__cta">
+        Ver Dashboard
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Tool 3 -->
+    <a href="tools/readiness-assessment.html" class="tool-card fade-up" style="text-decoration:none;">
+      <div class="tool-card__icon-wrap">
+        <span>🎯</span>
+        <div class="tool-card__num">03</div>
+      </div>
+      <div class="tool-card__body">
+        <div class="tool-card__tag">Diagnóstico de Preparación</div>
+        <h3 class="tool-card__title">¿Está tu empresa lista para una transacción?</h3>
+        <p class="tool-card__desc">Evalúa objetivamente qué tan lista está tu empresa para una venta, recapitalización o levantamiento de capital. Recibe una puntuación por categoría y una hoja de ruta personalizada con los pasos concretos para maximizar tu valor antes de salir al mercado.</p>
+        <div class="tool-card__meta">
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ~15 minutos
+          </span>
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            Hoja de ruta personalizada
+          </span>
+          <span class="tool-card__meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Puntuación por categoría
+          </span>
+        </div>
+      </div>
+      <div class="tool-card__cta">
+        Iniciar
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<section class="stats-strip">
+  <div class="container">
+    <div class="stats-strip__inner">
+      <div class="stats-strip__item fade-up">
+        <div class="stats-strip__num">30+</div>
+        <div class="stats-strip__label">Años de Experiencia</div>
+      </div>
+      <div class="stats-strip__item fade-up">
+        <div class="stats-strip__num">100+</div>
+        <div class="stats-strip__label">Transacciones Asesoradas</div>
+      </div>
+      <div class="stats-strip__item fade-up">
+        <div class="stats-strip__num">3</div>
+        <div class="stats-strip__label">Herramientas Gratuitas</div>
+      </div>
+      <div class="stats-strip__item fade-up">
+        <div class="stats-strip__num">100%</div>
+        <div class="stats-strip__label">Confidencial</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY FREE -->
+<section class="why-section">
+  <div class="container">
+    <div class="why-grid">
+      <div>
+        <span class="section__label">¿Por qué son gratuitas?</span>
+        <h2 class="section__title--dark" style="margin-bottom:20px">Información de calidad institucional, al alcance de todos</h2>
+        <div class="divider"></div>
+        <p style="color:var(--text-light);margin-bottom:28px;line-height:1.78">Estas herramientas reflejan el mismo rigor analítico que aplicamos en nuestras transacciones. Las ofrecemos de forma gratuita porque creemos que los fundadores merecen información de calidad institucional antes de tomar las decisiones más importantes de su vida empresarial.</p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-point__dot">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div>
+              <div class="why-point__title">Sin compromisos ni presión</div>
+              <p class="why-point__text">No se requieren datos personales ni registro. No existe ninguna obligación de contratar nuestros servicios.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point__dot">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div>
+              <div class="why-point__title">Metodología institucional</div>
+              <p class="why-point__text">Los mismos marcos analíticos que utilizan los bancos de inversión en sus procesos formales de M&A y levantamiento de capital.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point__dot">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div>
+              <div class="why-point__title">Resultados accionables</div>
+              <p class="why-point__text">Cada herramienta entrega un diagnóstico concreto con recomendaciones específicas que puedes implementar de inmediato.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="logo-showcase">
+        <img src="images/rw-logo.png" alt="RW Capital y Estrategia" />
+        <div class="logo-showcase__quote">"Cada fundador merece asesoría de la misma calidad que los grandes corporativos."</div>
+        <div class="logo-showcase__tagline">RW Capital y Estrategia · Est. 1997</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-section__pattern"></div>
+  <div class="container">
+    <div class="cta-section__content fade-up">
+      <h2 class="cta-section__title">¿Quieres revisar tus resultados con un experto?</h2>
+      <p class="cta-section__text">Nuestro equipo está disponible para analizar los resultados de tus diagnósticos y explorar cómo podemos apoyarte en tus decisiones estratégicas más importantes.</p>
+      <a href="contact.html" class="btn btn--primary">Hablar con Nuestro Equipo</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a href="index.html" style="display:inline-block;background:rgba(255,255,255,0.92);padding:10px 16px;border-radius:0;margin-bottom:20px;">
+          <img src="images/rw-logo.png" alt="RW Capital y Estrategia" style="height:52px;display:block;">
+        </a>
+        <p class="footer__brand-text">Firma líder de asesoría en banca de inversión independiente con más de 30 años de experiencia atendiendo a clientes nacionales e internacionales.</p>
+      </div>
+      <div>
+        <div class="footer__col-title">Servicios</div>
+        <a href="services.html#ma" class="footer__link">M&amp;A</a>
+        <a href="services.html#advisory" class="footer__link">Advisory</a>
+        <a href="services.html#fund-management" class="footer__link">Fund Management</a>
+      </div>
+      <div>
+        <div class="footer__col-title">Empresa</div>
+        <a href="about.html" class="footer__link">Nosotros</a>
+        <a href="partners.html" class="footer__link">Partner Program</a>
+        <a href="case-studies.html" class="footer__link">Casos de Éxito</a>
+        <a href="insights.html" class="footer__link">Publicaciones</a>
+      </div>
+      <div>
+        <div class="footer__col-title">Contacto</div>
+        <p class="footer__link">+52 (55) 5080 1300</p>
+        <a href="mailto:contacto@rw.com.mx" class="footer__link">contacto@rw.com.mx</a>
+        <p class="footer__link" style="margin-top:18px;font-size:0.8rem;color:rgba(255,255,255,0.35)">Ciudad de México</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span class="footer__copy">&copy; 2025 RW Capital y Estrategia. Todos los derechos reservados.</span>
+      <div class="footer__social">
+        <a href="https://www.linkedin.com/company/rw-capital-y-estrategia" target="_blank" rel="noopener" class="footer__social-link" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,741 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RW Trusted Partner Program — RW Capital y Estrategia</title>
+  <meta name="description" content="Collaboration program for independent advisors, ex-bankers and consultants who want to co-execute transactions with RW Capital y Estrategia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .partner-hero { padding: 140px 0 80px; background: #fff; border-bottom: 1px solid var(--border); }
+    .partner-hero__eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .partner-hero__eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--accent); }
+    .partner-hero__title { font-family: var(--font-heading); font-size: clamp(2.4rem, 4.5vw, 4rem); font-weight: 800; color: var(--primary); line-height: 1.1; max-width: 720px; margin-bottom: 24px; }
+    .partner-hero__title em { font-style: italic; color: var(--accent); }
+    .partner-hero__sub { font-size: 1.05rem; color: var(--text-light); max-width: 580px; line-height: 1.7; margin-bottom: 40px; }
+    .partner-hero__models { display: flex; gap: 8px; flex-wrap: wrap; }
+    .model-pill { padding: 6px 14px; border: 1px solid var(--border); font-size: 0.78rem; font-weight: 600; color: var(--text-light); letter-spacing: 0.04em; }
+    .assessment-section { padding: 80px 0 100px; background: var(--bg-light); min-height: 70vh; }
+    .assessment-layout { display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: start; }
+    @media (max-width: 900px) { .assessment-layout { grid-template-columns: 1fr; } .assessment-sidebar { display: none; } }
+    .assess-progress { display: flex; align-items: center; gap: 0; margin-bottom: 48px; }
+    .assess-step { display: flex; align-items: center; gap: 0; flex: 1; }
+    .assess-step__dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); flex-shrink: 0; transition: all 0.3s ease; position: relative; z-index: 1; }
+    .assess-step__dot.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+    .assess-step__dot.done { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .assess-step__line { flex: 1; height: 2px; background: var(--border); transition: background 0.3s ease; }
+    .assess-step__line.done { background: var(--accent); }
+    .assess-step:last-child .assess-step__line { display: none; }
+    .question-card { background: #fff; border: 1px solid var(--border); padding: 40px 44px 44px; display: none; }
+    .question-card.active { display: block; animation: fadeSlide 0.3s ease; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+    .question-card__label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .question-card__title { font-family: var(--font-heading); font-size: clamp(1.3rem, 2.5vw, 1.75rem); color: var(--primary); font-weight: 700; margin-bottom: 8px; line-height: 1.25; }
+    .question-card__hint { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 28px; }
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px; }
+    .options-grid--3 { grid-template-columns: repeat(3, 1fr); }
+    .options-grid--1 { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .options-grid, .options-grid--3 { grid-template-columns: 1fr; } }
+    .option-card { padding: 18px 20px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; transition: all 0.2s ease; position: relative; }
+    .option-card:hover { border-color: var(--primary); background: rgba(21,67,96,0.03); }
+    .option-card.selected { border-color: var(--primary); background: rgba(21,67,96,0.06); }
+    .option-card__title { font-weight: 600; font-size: 0.92rem; color: var(--primary); margin-bottom: 4px; }
+    .option-card__desc { font-size: 0.8rem; color: var(--text-light); line-height: 1.5; }
+    .option-card__check { position: absolute; top: 12px; right: 14px; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); background: #fff; transition: all 0.2s ease; }
+    .option-card.selected .option-card__check { border-color: var(--primary); background: var(--primary); }
+    .option-card.selected .option-card__check::after { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: #fff; margin: 4px auto 0; }
+    .checkbox-card { padding: 14px 20px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 14px; }
+    .checkbox-card:hover { border-color: var(--primary); background: rgba(21,67,96,0.02); }
+    .checkbox-card.selected { border-color: var(--primary); background: rgba(21,67,96,0.05); }
+    .checkbox-card__box { width: 18px; height: 18px; border: 1.5px solid var(--border); background: #fff; flex-shrink: 0; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+    .checkbox-card.selected .checkbox-card__box { border-color: var(--primary); background: var(--primary); }
+    .checkbox-card__tick { width: 10px; height: 7px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translate(1px,-1px); display: none; }
+    .checkbox-card.selected .checkbox-card__tick { display: block; }
+    .checkbox-card__label { font-size: 0.88rem; font-weight: 500; color: var(--primary); }
+    .assess-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .assess-nav__back { font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: color 0.2s; background: none; border: none; padding: 0; font-family: inherit; }
+    .assess-nav__back:hover { color: var(--primary); }
+    .assess-nav__back:disabled { opacity: 0.3; cursor: default; }
+    .assess-nav__next { padding: 12px 32px; background: var(--primary); color: #fff; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; border: none; cursor: pointer; transition: background 0.2s ease; font-family: inherit; }
+    .assess-nav__next:hover { background: var(--secondary); }
+    .assess-nav__next:disabled { opacity: 0.4; cursor: default; }
+    .assessment-sidebar { position: sticky; top: calc(var(--nav-height) + 24px); }
+    .sidebar-preview { background: var(--primary); color: #fff; padding: 32px 28px; border-top: 3px solid var(--accent); }
+    .sidebar-preview__label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+    .sidebar-preview__model { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 8px; min-height: 2em; line-height: 1.2; }
+    .sidebar-preview__fee { font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+    .sidebar-preview__fee span { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.5); display: block; margin-top: 2px; }
+    .sidebar-preview__desc { font-size: 0.82rem; color: rgba(255,255,255,0.65); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 16px; margin-top: 16px; }
+    .sidebar-preview__meter { margin-top: 20px; }
+    .sidebar-preview__meter-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-bottom: 6px; }
+    .sidebar-preview__bar { height: 4px; background: rgba(255,255,255,0.15); position: relative; }
+    .sidebar-preview__fill { height: 100%; background: var(--accent); transition: width 0.5s ease; width: 0%; }
+    .sidebar-preview__placeholder { font-size: 0.82rem; color: rgba(255,255,255,0.35); font-style: italic; line-height: 1.5; }
+    .results-section { display: none; padding: 80px 0 100px; background: var(--bg-light); }
+    .results-section.active { display: block; animation: fadeSlide 0.5s ease; }
+    .results-header { margin-bottom: 48px; }
+    .results-header__eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .results-header__title { font-family: var(--font-heading); font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--primary); margin-bottom: 8px; }
+    .results-header__sub { color: var(--text-light); font-size: 0.95rem; }
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-bottom: 2px; }
+    @media (max-width: 768px) { .results-grid { grid-template-columns: 1fr; } }
+    .result-card { background: #fff; padding: 36px 32px; }
+    .result-card--accent { background: var(--primary); color: #fff; }
+    .result-card__label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .result-card--accent .result-card__label { color: rgba(255,255,255,0.5); }
+    .result-card__model { font-family: var(--font-heading); font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .result-card--accent .result-card__model { color: #fff; }
+    .result-card__fee { font-size: 2.4rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .result-card__fee-note { font-size: 0.82rem; color: var(--text-light); }
+    .result-card__desc { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; margin-top: 16px; }
+    .result-card--accent .result-card__desc { color: rgba(255,255,255,0.65); }
+    .split-bar { margin-top: 20px; }
+    .split-bar__labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; color: var(--text-muted); }
+    .split-bar__track { height: 8px; background: var(--border); display: flex; }
+    .split-bar__you { background: var(--primary); transition: width 0.6s ease; }
+    .split-bar__rw { background: var(--accent); flex: 1; }
+    .split-bar__pcts { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-top: 6px; }
+    .split-bar__pct-you { color: var(--primary); }
+    .split-bar__pct-rw { color: var(--accent); }
+    .resp-table { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-top: 2px; }
+    @media (max-width: 600px) { .resp-table { grid-template-columns: 1fr; } }
+    .resp-col { background: #fff; padding: 28px 28px 32px; }
+    .resp-col__header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+    .resp-col--you .resp-col__header { color: var(--primary); border-color: var(--primary); }
+    .resp-col--rw  .resp-col__header { color: var(--accent);  border-color: var(--accent); }
+    .resp-col__list { list-style: none; }
+    .resp-col__item { font-size: 0.88rem; color: var(--text); padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+    .resp-col__item:last-child { border-bottom: none; }
+    .resp-col__item::before { content: '→'; color: var(--text-muted); flex-shrink: 0; font-size: 0.78rem; margin-top: 1px; }
+    .results-cta { background: var(--primary); border-top: 3px solid var(--accent); padding: 44px 40px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .results-cta__text h3 { font-family: var(--font-heading); color: #fff; font-size: 1.4rem; margin-bottom: 6px; }
+    .results-cta__text p { font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+    .results-cta__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn--accent { padding: 12px 28px; background: var(--accent); color: #fff; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; border: none; cursor: pointer; transition: background 0.2s; font-family: inherit; text-decoration: none; display: inline-block; }
+    .btn--accent:hover { background: var(--accent-dark); }
+    .btn--ghost-white { padding: 12px 28px; background: transparent; color: rgba(255,255,255,0.75); font-size: 0.88rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+    .btn--ghost-white:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+    .submission-section { display: none; padding: 80px 0 100px; background: #fff; }
+    .submission-section.active { display: block; animation: fadeSlide 0.4s ease; }
+    .form-header { margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
+    .form-header__eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .form-header__title { font-family: var(--font-heading); font-size: clamp(1.6rem, 2.5vw, 2.2rem); color: var(--primary); }
+    .form-header__context { margin-top: 20px; padding: 16px 20px; background: rgba(21,67,96,0.04); border-left: 3px solid var(--primary); font-size: 0.88rem; color: var(--text-light); }
+    .form-header__context strong { color: var(--primary); }
+    .submit-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 800px; }
+    @media (max-width: 640px) { .submit-form { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group--full { grid-column: 1 / -1; }
+    .form-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
+    .form-input, .form-select, .form-textarea { padding: 12px 16px; border: 1.5px solid var(--border); background: #fff; font-family: var(--font-body); font-size: 0.92rem; color: var(--text); transition: border-color 0.2s; border-radius: 0; width: 100%; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); }
+    .form-textarea { min-height: 100px; resize: vertical; }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+    .toggle-group { display: flex; border: 1.5px solid var(--border); overflow: hidden; }
+    .toggle-btn { flex: 1; padding: 12px; text-align: center; font-size: 0.88rem; font-weight: 600; color: var(--text-light); cursor: pointer; background: #fff; border: none; border-right: 1px solid var(--border); transition: all 0.2s; font-family: inherit; }
+    .toggle-btn:last-child { border-right: none; }
+    .toggle-btn.active { background: var(--primary); color: #fff; }
+    .file-drop { border: 2px dashed var(--border); padding: 32px 24px; text-align: center; cursor: pointer; transition: border-color 0.2s; background: var(--bg-light); }
+    .file-drop:hover { border-color: var(--primary); }
+    .file-drop__text { font-size: 0.88rem; color: var(--text-muted); }
+    .file-drop__text strong { color: var(--primary); display: block; margin-bottom: 4px; }
+    .form-result-summary { grid-column: 1 / -1; background: rgba(21,67,96,0.04); border: 1px solid rgba(21,67,96,0.12); padding: 16px 20px; font-size: 0.85rem; color: var(--text-light); }
+    .form-result-summary strong { color: var(--primary); }
+    .form-submit-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 20px; padding-top: 8px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .form-disclaimer { font-size: 0.78rem; color: var(--text-muted); flex: 1; min-width: 200px; }
+    .btn--submit { padding: 14px 36px; background: var(--primary); color: #fff; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.06em; border: none; cursor: pointer; transition: background 0.2s; font-family: inherit; }
+    .btn--submit:hover { background: var(--secondary); }
+    .success-banner { display: none; background: #fff; border: 1px solid var(--border); border-left: 4px solid #27AE60; padding: 32px 36px; max-width: 600px; margin-top: 32px; }
+    .success-banner.active { display: block; }
+    .success-banner h3 { font-family: var(--font-heading); color: var(--primary); margin-bottom: 8px; }
+    .success-banner p { font-size: 0.9rem; color: var(--text-light); }
+    .models-strip { padding: 72px 0; background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .models-strip__header { margin-bottom: 40px; }
+    .models-strip__eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .models-strip__title { font-family: var(--font-heading); font-size: clamp(1.4rem, 2.5vw, 1.9rem); color: var(--primary); }
+    .models-table { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; background: var(--border); }
+    @media (max-width: 900px) { .models-table { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .models-table { grid-template-columns: 1fr; } }
+    .model-col { background: #fff; padding: 28px 22px; border-top: 3px solid transparent; transition: border-color 0.2s; }
+    .model-col:hover { border-top-color: var(--accent); }
+    .model-col__num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .model-col__name { font-family: var(--font-heading); font-size: 1.05rem; color: var(--primary); font-weight: 700; margin-bottom: 8px; }
+    .model-col__fee { font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+    .model-col__desc { font-size: 0.8rem; color: var(--text-light); line-height: 1.6; }
+    @media (max-width: 640px) { .question-card { padding: 28px 20px; } .results-cta { flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav solid" id="main-nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="../images/rw-logo.png" alt="RW Capital y Estrategia" class="nav__logo-img">
+      </a>
+      <ul class="nav__menu" id="nav-menu">
+        <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="about.html" class="nav__link">About</a>
+          <div class="nav__dropdown">
+            <a href="about.html#our-story" class="nav__dropdown-link">Our Story</a>
+            <a href="about.html#team" class="nav__dropdown-link">Team</a>
+            <a href="about.html#careers" class="nav__dropdown-link">Careers</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="services.html" class="nav__link">Services</a>
+          <div class="nav__dropdown">
+            <a href="services.html#ma" class="nav__dropdown-link">M&amp;A</a>
+            <a href="services.html#advisory" class="nav__dropdown-link">Advisory</a>
+            <a href="services.html#fund-management" class="nav__dropdown-link">Fund Management</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="industries.html" class="nav__link">Industries</a>
+          <div class="nav__dropdown">
+            <a href="industries.html#financial-services" class="nav__dropdown-link">Financial Services</a>
+            <a href="industries.html#technology" class="nav__dropdown-link">Technology</a>
+            <a href="industries.html#industrials" class="nav__dropdown-link">Industrials</a>
+            <a href="industries.html#education" class="nav__dropdown-link">Education</a>
+            <a href="industries.html#other" class="nav__dropdown-link">Other</a>
+          </div>
+        </li>
+        <li class="nav__item"><a href="case-studies.html" class="nav__link">Case Studies</a></li>
+        <li class="nav__item"><a href="partners.html" class="nav__link active">Partners</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="insights.html" class="nav__link">Insights</a>
+          <div class="nav__dropdown">
+            <a href="insights.html#feed" class="nav__dropdown-link">LinkedIn Feed</a>
+            <a href="insights.html#podcast" class="nav__dropdown-link">Podcast</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="../tools/valuation-simulator.html" class="nav__link">Tools</a>
+          <div class="nav__dropdown">
+            <a href="../tools/valuation-simulator.html" class="nav__dropdown-link">Valuation Simulator</a>
+            <a href="../tools/market-dashboard.html" class="nav__dropdown-link">Market Dashboard</a>
+            <a href="../tools/readiness-assessment.html" class="nav__dropdown-link">Readiness Assessment</a>
+          </div>
+        </li>
+        <li class="nav__item"><a href="contact.html" class="nav__link nav__cta">Contact Us</a></li>
+      </ul>
+      <div class="lang-toggle"><a href="../partners.html" class="lang-toggle__opt">ES</a><span class="lang-toggle__sep"></span><span class="lang-toggle__opt lang-toggle__opt--active">EN</span></div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="partner-hero">
+  <div class="container">
+    <div class="partner-hero__eyebrow">RW Trusted Partner Program</div>
+    <h1 class="partner-hero__title">Execute larger transactions<br>with the <em>institutional</em><br>backing of RW.</h1>
+    <p class="partner-hero__sub">A collaboration program for independent advisors, ex-bankers, consultants and operators who want to co-execute transactions with an institutional firm — without giving up their client relationship.</p>
+    <div class="partner-hero__models">
+      <span class="model-pill">Referral Partner</span>
+      <span class="model-pill">Relationship Partner</span>
+      <span class="model-pill">Execution Partner</span>
+      <span class="model-pill">Strategic Partner</span>
+      <span class="model-pill">Joint Venture</span>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS OVERVIEW -->
+<section class="models-strip">
+  <div class="container">
+    <div class="models-strip__header">
+      <div class="models-strip__eyebrow">Collaboration Models</div>
+      <h2 class="models-strip__title">Five structures. One tailored relationship.</h2>
+    </div>
+    <div class="models-table">
+      <div class="model-col">
+        <div class="model-col__num">01</div>
+        <div class="model-col__name">Referral Partner</div>
+        <div class="model-col__fee">10–20% of fee</div>
+        <p class="model-col__desc">You refer the opportunity. RW handles full execution. Ideal for contacts who identify deals but lack the capacity to execute them.</p>
+      </div>
+      <div class="model-col">
+        <div class="model-col__num">02</div>
+        <div class="model-col__name">Relationship Partner</div>
+        <div class="model-col__fee">20–35% of fee</div>
+        <p class="model-col__desc">You maintain the primary client relationship. RW leads the process. Your role is liaison and oversight; technical execution is ours.</p>
+      </div>
+      <div class="model-col">
+        <div class="model-col__num">03</div>
+        <div class="model-col__name">Execution Partner</div>
+        <div class="model-col__fee">35–50% of fee</div>
+        <p class="model-col__desc">Active participation in the process. You and RW co-manage execution with clearly divided roles. For profiles with solid transactional experience.</p>
+      </div>
+      <div class="model-col">
+        <div class="model-col__num">04</div>
+        <div class="model-col__name">Strategic Partner</div>
+        <div class="model-col__fee">50–65% of fee</div>
+        <p class="model-col__desc">You lead the mandate. RW provides brand, technical resources and network access. Designed for senior advisors with a proven track record.</p>
+      </div>
+      <div class="model-col">
+        <div class="model-col__num">05</div>
+        <div class="model-col__name">Joint Venture</div>
+        <div class="model-col__fee">50/50</div>
+        <p class="model-col__desc">Full co-advisory. Both parties co-lead the mandate with equal responsibilities and fees. For transactions where both parties' expertise is equally critical.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSESSMENT -->
+<section class="assessment-section" id="assessment">
+  <div class="container">
+    <div style="margin-bottom:40px;">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Partnership Assessment</div>
+      <h2 style="font-family:var(--font-heading);font-size:clamp(1.5rem,2.5vw,2rem);color:var(--primary);">Find the model that fits your profile.</h2>
+      <p style="color:var(--text-light);font-size:0.92rem;margin-top:8px;">7 questions · ~2 minutes · Instant personalized recommendation</p>
+    </div>
+    <div class="assessment-layout">
+      <div>
+        <div class="assess-progress" id="progress">
+          <div class="assess-step"><div class="assess-step__dot active" id="dot-1">1</div><div class="assess-step__line"></div></div>
+          <div class="assess-step"><div class="assess-step__dot" id="dot-2">2</div><div class="assess-step__line"></div></div>
+          <div class="assess-step"><div class="assess-step__dot" id="dot-3">3</div><div class="assess-step__line"></div></div>
+          <div class="assess-step"><div class="assess-step__dot" id="dot-4">4</div><div class="assess-step__line"></div></div>
+          <div class="assess-step"><div class="assess-step__dot" id="dot-5">5</div><div class="assess-step__line"></div></div>
+          <div class="assess-step"><div class="assess-step__dot" id="dot-6">6</div><div class="assess-step__line"></div></div>
+          <div class="assess-step"><div class="assess-step__dot" id="dot-7">7</div><div class="assess-step__line"></div></div>
+        </div>
+
+        <div class="question-card active" id="q1">
+          <div class="question-card__label">Question 1 of 7</div>
+          <h3 class="question-card__title">Who originated this opportunity?</h3>
+          <p class="question-card__hint">Select the option that best describes how this mandate came about.</p>
+          <div class="options-grid">
+            <div class="option-card" data-q="1" data-val="you" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">I originated it</div>
+              <div class="option-card__desc">I identified the opportunity independently and developed the transaction thesis.</div>
+            </div>
+            <div class="option-card" data-q="1" data-val="client" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">The client approached me</div>
+              <div class="option-card__desc">The client or its shareholders contacted me directly for advisory on this transaction.</div>
+            </div>
+            <div class="option-card" data-q="1" data-val="shared" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">Shared origin</div>
+              <div class="option-card__desc">We identified the opportunity jointly through a shared network or third party.</div>
+            </div>
+            <div class="option-card" data-q="1" data-val="rw" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">RW referred it to me</div>
+              <div class="option-card__desc">RW has the opportunity and invites me to participate due to my specific expertise or relationship.</div>
+            </div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" disabled onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-1" disabled onclick="goNext(1)">Next →</button>
+          </div>
+        </div>
+
+        <div class="question-card" id="q2">
+          <div class="question-card__label">Question 2 of 7</div>
+          <h3 class="question-card__title">Who owns the client relationship?</h3>
+          <p class="question-card__hint">The primary relationship determines the responsibility structure and fee model.</p>
+          <div class="options-grid options-grid--3">
+            <div class="option-card" data-q="2" data-val="you" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">I own the relationship</div>
+              <div class="option-card__desc">The client relies on me as their primary advisor. I maintain direct access.</div>
+            </div>
+            <div class="option-card" data-q="2" data-val="shared" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">Shared relationship</div>
+              <div class="option-card__desc">Both RW and I have a presence with the client. There is mutual trust.</div>
+            </div>
+            <div class="option-card" data-q="2" data-val="rw" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">RW owns the relationship</div>
+              <div class="option-card__desc">RW has the existing relationship and I contribute technical or sector capacity.</div>
+            </div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-2" disabled onclick="goNext(2)">Next →</button>
+          </div>
+        </div>
+
+        <div class="question-card" id="q3">
+          <div class="question-card__label">Question 3 of 7</div>
+          <h3 class="question-card__title">Who will lead execution?</h3>
+          <p class="question-card__hint">Consider who will manage the process, coordinate advisors and lead negotiations.</p>
+          <div class="options-grid options-grid--3">
+            <div class="option-card" data-q="3" data-val="you" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">I will lead</div>
+              <div class="option-card__desc">I have the capacity and experience to manage the process from start to finish.</div>
+            </div>
+            <div class="option-card" data-q="3" data-val="shared" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">Shared execution</div>
+              <div class="option-card__desc">We will divide responsibilities clearly. Active collaboration from both sides.</div>
+            </div>
+            <div class="option-card" data-q="3" data-val="rw" onclick="selectOption(this)">
+              <div class="option-card__check"></div>
+              <div class="option-card__title">RW will lead</div>
+              <div class="option-card__desc">I prefer RW to manage the process. My role is liaison, oversight or specific contribution.</div>
+            </div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-3" disabled onclick="goNext(3)">Next →</button>
+          </div>
+        </div>
+
+        <div class="question-card" id="q4">
+          <div class="question-card__label">Question 4 of 7</div>
+          <h3 class="question-card__title">What support do you need from RW?</h3>
+          <p class="question-card__hint">Select all that apply. You may choose multiple options.</p>
+          <div class="options-grid options-grid--1" style="gap:8px;">
+            <div class="checkbox-card" data-q="4" data-val="brand" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Brand / Institutional credential</div></div>
+            <div class="checkbox-card" data-q="4" data-val="model" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Financial model and quantitative analysis</div></div>
+            <div class="checkbox-card" data-q="4" data-val="valuation" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Independent valuation</div></div>
+            <div class="checkbox-card" data-q="4" data-val="im" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Information Memorandum (IM / CIM)</div></div>
+            <div class="checkbox-card" data-q="4" data-val="dataroom" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Data room management and due diligence</div></div>
+            <div class="checkbox-card" data-q="4" data-val="access" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Access to buyers, funds or investors</div></div>
+            <div class="checkbox-card" data-q="4" data-val="negotiations" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Negotiation support and deal structuring</div></div>
+            <div class="checkbox-card" data-q="4" data-val="senior" onclick="toggleCheck(this)"><div class="checkbox-card__box"><div class="checkbox-card__tick"></div></div><div class="checkbox-card__label">Senior advisory / strategic counsel</div></div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-4" onclick="goNext(4)">Next →</button>
+          </div>
+        </div>
+
+        <div class="question-card" id="q5">
+          <div class="question-card__label">Question 5 of 7</div>
+          <h3 class="question-card__title">How many transactions have you executed in the past 10 years?</h3>
+          <p class="question-card__hint">Include M&A, capital raising, debt and restructurings where you played an active role.</p>
+          <div class="options-grid options-grid--3">
+            <div class="option-card" data-q="5" data-val="novice" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">0 – 2 transactions</div><div class="option-card__desc">Early-stage experience. Strong in relationships or industry knowledge.</div></div>
+            <div class="option-card" data-q="5" data-val="intermediate" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">3 – 10 transactions</div><div class="option-card__desc">Intermediate profile with active processes and execution experience.</div></div>
+            <div class="option-card" data-q="5" data-val="experienced" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">10+ transactions</div><div class="option-card__desc">Solid track record. Capable of leading complex mandates independently.</div></div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-5" disabled onclick="goNext(5)">Next →</button>
+          </div>
+        </div>
+
+        <div class="question-card" id="q6">
+          <div class="question-card__label">Question 6 of 7</div>
+          <h3 class="question-card__title">What is the estimated transaction size?</h3>
+          <p class="question-card__hint">Enterprise value or capital amount in USD. Approximate estimate.</p>
+          <div class="options-grid">
+            <div class="option-card" data-q="6" data-val="small" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">Under $5M USD</div><div class="option-card__desc">Small company or niche transaction.</div></div>
+            <div class="option-card" data-q="6" data-val="mid" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">$5M – $25M USD</div><div class="option-card__desc">Lower middle market. Regional transactions.</div></div>
+            <div class="option-card" data-q="6" data-val="upper" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">$25M – $100M USD</div><div class="option-card__desc">Middle market. Core of the RW market.</div></div>
+            <div class="option-card" data-q="6" data-val="large" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">$100M+ USD</div><div class="option-card__desc">Large transaction. Requires full institutional resources.</div></div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-6" disabled onclick="goNext(6)">Next →</button>
+          </div>
+        </div>
+
+        <div class="question-card" id="q7">
+          <div class="question-card__label">Question 7 of 7</div>
+          <h3 class="question-card__title">What type of transaction is it?</h3>
+          <p class="question-card__hint">Select the primary category of the mandate.</p>
+          <div class="options-grid">
+            <div class="option-card" data-q="7" data-val="ma" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">M&amp;A — Buy / Sell</div><div class="option-card__desc">Company sale, acquisition or strategic merger.</div></div>
+            <div class="option-card" data-q="7" data-val="capital" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">Capital Raising</div><div class="option-card__desc">Equity capital, PE, family office or strategic investor.</div></div>
+            <div class="option-card" data-q="7" data-val="debt" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">Debt / Refinancing</div><div class="option-card__desc">Bank credit, private debt, bonds or liability structuring.</div></div>
+            <div class="option-card" data-q="7" data-val="restructuring" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">Financial Restructuring</div><div class="option-card__desc">Stress situation. Creditor negotiation or viability plan.</div></div>
+            <div class="option-card" data-q="7" data-val="valuation" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">Valuation</div><div class="option-card__desc">Independent valuation for a transaction, tax, litigation or strategy.</div></div>
+            <div class="option-card" data-q="7" data-val="funds" onclick="selectOption(this)"><div class="option-card__check"></div><div class="option-card__title">Fund Management</div><div class="option-card__desc">Fund management, structuring or co-investment.</div></div>
+          </div>
+          <div class="assess-nav">
+            <button class="assess-nav__back" onclick="goBack()">← Previous</button>
+            <button class="assess-nav__next" id="next-7" disabled onclick="showResults()">See my recommendation →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="assessment-sidebar">
+        <div class="sidebar-preview">
+          <div class="sidebar-preview__label">Estimated model</div>
+          <div class="sidebar-preview__model" id="sidebar-model">
+            <span class="sidebar-preview__placeholder">Answer the questions to see your recommended model.</span>
+          </div>
+          <div class="sidebar-preview__fee" id="sidebar-fee" style="display:none;">
+            <span id="sidebar-fee-text"></span>
+            <span>estimated fee participation</span>
+          </div>
+          <div class="sidebar-preview__desc" id="sidebar-desc" style="display:none;"></div>
+          <div class="sidebar-preview__meter" id="sidebar-meter" style="display:none;">
+            <div class="sidebar-preview__meter-label"><span>Referral</span><span>JV</span></div>
+            <div class="sidebar-preview__bar"><div class="sidebar-preview__fill" id="sidebar-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" id="results-section">
+  <div class="container">
+    <div class="results-header">
+      <div class="results-header__eyebrow">Your Recommendation</div>
+      <h2 class="results-header__title" id="result-title">Recommended Model</h2>
+      <p class="results-header__sub" id="result-sub">Based on your profile and transaction structure.</p>
+    </div>
+    <div class="results-grid">
+      <div class="result-card result-card--accent">
+        <div class="result-card__label">Recommended Model</div>
+        <div class="result-card__model" id="result-model-name">—</div>
+        <div class="result-card__desc" id="result-model-why">—</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__label">Estimated Fee Participation</div>
+        <div class="result-card__fee" id="result-fee">—</div>
+        <div class="result-card__fee-note">Indicative estimate. Final structure is defined in the collaboration agreement.</div>
+        <div class="split-bar">
+          <div class="split-bar__labels"><span>You</span><span>RW</span></div>
+          <div class="split-bar__track">
+            <div class="split-bar__you" id="bar-you" style="width:0%"></div>
+            <div class="split-bar__rw" id="bar-rw"></div>
+          </div>
+          <div class="split-bar__pcts">
+            <span class="split-bar__pct-you" id="pct-you">—</span>
+            <span class="split-bar__pct-rw" id="pct-rw">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="resp-table">
+      <div class="resp-col resp-col--you">
+        <div class="resp-col__header">Your Role</div>
+        <ul class="resp-col__list" id="resp-you"></ul>
+      </div>
+      <div class="resp-col resp-col--rw">
+        <div class="resp-col__header">RW's Role</div>
+        <ul class="resp-col__list" id="resp-rw"></ul>
+      </div>
+    </div>
+    <div class="results-cta">
+      <div class="results-cta__text">
+        <h3>Does this model make sense?</h3>
+        <p>Submit the opportunity and an RW associate will contact you within 24–48 business hours.</p>
+      </div>
+      <div class="results-cta__actions">
+        <button class="btn--accent" onclick="showSubmission()">Submit this opportunity</button>
+        <button class="btn--ghost-white" onclick="restartAssessment()">Restart assessment</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBMISSION FORM -->
+<section class="submission-section" id="submission-section">
+  <div class="container" style="max-width:900px;">
+    <div class="form-header">
+      <div class="form-header__eyebrow">Opportunity Submission</div>
+      <h2 class="form-header__title">Tell us about the mandate.</h2>
+      <div class="form-header__context">
+        Selected model: <strong id="form-context-model">—</strong> &nbsp;·&nbsp; Estimated fee: <strong id="form-context-fee">—</strong> &nbsp;·&nbsp; Type: <strong id="form-context-type">—</strong>
+      </div>
+    </div>
+    <form class="submit-form" id="submit-form" onsubmit="handleSubmit(event)">
+      <div class="form-group"><label class="form-label">Full name *</label><input type="text" class="form-input" id="f-name" placeholder="e.g. John Smith" required></div>
+      <div class="form-group"><label class="form-label">Company / Firm</label><input type="text" class="form-input" id="f-company" placeholder="Your company or firm name"></div>
+      <div class="form-group"><label class="form-label">LinkedIn *</label><input type="url" class="form-input" id="f-linkedin" placeholder="https://linkedin.com/in/..." required></div>
+      <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input" id="f-email" placeholder="email@example.com" required></div>
+      <div class="form-group">
+        <label class="form-label">Transaction type</label>
+        <select class="form-select" id="f-type">
+          <option value="">Select...</option>
+          <option value="ma-sell">M&A Sell-Side</option>
+          <option value="ma-buy">M&A Buy-Side</option>
+          <option value="capital">Capital Raising</option>
+          <option value="debt">Debt Advisory</option>
+          <option value="restructuring">Financial Restructuring</option>
+          <option value="valuation">Valuation</option>
+          <option value="funds">Fund Management</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Estimated size (USD)</label>
+        <select class="form-select" id="f-size">
+          <option value="">Select...</option>
+          <option value="lt5">Under $5M</option>
+          <option value="5-25">$5M – $25M</option>
+          <option value="25-100">$25M – $100M</option>
+          <option value="gt100">$100M+</option>
+        </select>
+      </div>
+      <div class="form-group form-group--full"><label class="form-label">Mandate description *</label><textarea class="form-textarea" id="f-desc" placeholder="Describe the company, situation and transaction objective. You may omit names if needed for confidentiality." required style="min-height:120px;"></textarea></div>
+      <div class="form-group form-group--full">
+        <label class="form-label">Is the client already engaged with you?</label>
+        <div class="toggle-group">
+          <button type="button" class="toggle-btn" id="eng-yes" onclick="setEngaged('yes')">Yes, signed agreement</button>
+          <button type="button" class="toggle-btn" id="eng-verbal" onclick="setEngaged('verbal')">Yes, verbally</button>
+          <button type="button" class="toggle-btn" id="eng-no" onclick="setEngaged('no')">Not yet</button>
+        </div>
+      </div>
+      <div class="form-group form-group--full">
+        <label class="form-label">Attachment (optional)</label>
+        <div class="file-drop" onclick="document.getElementById('f-file').click()">
+          <input type="file" id="f-file" style="display:none;" accept=".pdf,.pptx,.xlsx,.docx" onchange="updateFileName(this)">
+          <div class="file-drop__text"><strong id="file-name-display">Click to upload a file</strong>PDF, PPTX, XLSX or DOCX · Max 10 MB</div>
+        </div>
+      </div>
+      <div class="form-group form-group--full"><label class="form-label">Additional comments</label><textarea class="form-textarea" id="f-comments" placeholder="Additional context, timing constraints, special considerations..."></textarea></div>
+      <div class="form-result-summary"><strong>Included with this submission:</strong> Recommended model (<span id="fs-model">—</span>), estimated fee participation (<span id="fs-fee">—</span>), assessment responses.</div>
+      <div class="form-submit-row">
+        <p class="form-disclaimer">All information provided is confidential and will be used solely to evaluate the collaboration opportunity. RW will not share your data without your consent.</p>
+        <button type="submit" class="btn--submit">Submit →</button>
+      </div>
+    </form>
+    <div class="success-banner" id="success-banner">
+      <h3>Submission received.</h3>
+      <p>An RW associate will review your opportunity and contact you within 24–48 business hours. Thank you for considering RW as your partner on this transaction.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a href="index.html" style="display:inline-block;background:rgba(255,255,255,0.92);padding:10px 16px;border-radius:0;margin-bottom:20px;">
+          <img src="../images/rw-logo.png" alt="RW Capital y Estrategia" style="height:52px;display:block;">
+        </a>
+        <p class="footer__brand-text">Leading independent investment banking advisory firm with over 30 years of experience serving domestic and international clients.</p>
+      </div>
+      <div>
+        <div class="footer__col-title">Services</div>
+        <a href="services.html#ma" class="footer__link">M&amp;A</a>
+        <a href="services.html#advisory" class="footer__link">Advisory</a>
+        <a href="services.html#fund-management" class="footer__link">Fund Management</a>
+      </div>
+      <div>
+        <div class="footer__col-title">Company</div>
+        <a href="about.html" class="footer__link">About</a>
+        <a href="partners.html" class="footer__link">Partner Program</a>
+        <a href="case-studies.html" class="footer__link">Case Studies</a>
+        <a href="insights.html" class="footer__link">Insights</a>
+      </div>
+      <div>
+        <div class="footer__col-title">Contact</div>
+        <p class="footer__link">+52 (55) 5080 1300</p>
+        <a href="mailto:contacto@rw.com.mx" class="footer__link">contacto@rw.com.mx</a>
+        <p class="footer__link" style="margin-top:18px;font-size:0.8rem;color:rgba(255,255,255,0.35)">Mexico City</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span class="footer__copy">&copy; 2025 RW Capital y Estrategia. All rights reserved.</span>
+      <div class="footer__social">
+        <a href="https://www.linkedin.com/company/rw-capital-y-estrategia" target="_blank" rel="noopener" class="footer__social-link" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+const answers = {};
+let currentStep = 1;
+const TOTAL_STEPS = 7;
+let engagedVal = '';
+const MODELS = {
+  referral: { name:'Referral Partner', fee:'10 – 20%', youPct:15, desc:'Your strength is originating the opportunity. RW takes the lead on execution, relationship and process.', why:'Your profile indicates that most of the execution and client relationship will rest with RW. This is the cleanest model to start a collaboration.', youRoles:['Identify and present the opportunity','Make the introduction to the client','Be available for context consultations'], rwRoles:['Full process management','Primary client relationship','Materials, negotiations and closing','Coordination of all advisors'] },
+  relationship: { name:'Relationship Partner', fee:'20 – 35%', youPct:27, desc:'You maintain the client relationship and act as the key liaison. RW leads technical execution and process.', why:'You have the relationship but prefer RW to manage the process. This model protects your client bond while RW provides the execution engine.', youRoles:['Maintain the primary client relationship','Facilitate access and information','Participate in key meetings','Validate strategy with the client'], rwRoles:['Lead the process and timeline','Produce all materials','Manage buyers / investors','Negotiate and close the transaction'] },
+  execution: { name:'Execution Partner', fee:'35 – 50%', youPct:42, desc:'Active co-execution. Clearly divided roles between you and RW. For profiles with transactional experience who want to collaborate without ceding control.', why:'You can execute, but combining capabilities creates a stronger team. The role division leverages each party\'s strengths.', youRoles:['Co-manage the transaction process','Maintain direct client contact','Lead specific sections of the process','Participate in negotiations'], rwRoles:['Provide complementary technical capabilities','Support with materials and analysis','Access to buyer / fund network','Institutional backing and senior review'] },
+  strategic: { name:'Strategic Partner', fee:'50 – 65%', youPct:57, desc:'You lead. RW provides brand, specific resources and network access. The mandate is yours — RW is your institutional backing partner.', why:'Your experience and control of the mandate justify a majority participation. RW complements without interfering with your leadership.', youRoles:['Lead the process from start to finish','Manage the client relationship','Direct negotiations and closing','Coordinate all external advisors'], rwRoles:['Provide institutional brand','Access to specific buyer or capital network','Targeted technical support','Co-signature on documentation if applicable'] },
+  jv: { name:'Joint Venture', fee:'50 / 50', youPct:50, desc:'Full co-advisory. Both parties co-lead the mandate with equal responsibilities, access and fees.', why:'The mandate requires the combined capabilities of both parties on equal terms. No single leader — both are indispensable.', youRoles:['Co-lead the process','Contribute specific expertise','Joint client management','Equal participation at all stages'], rwRoles:['Co-lead the process','Contribute institutional capabilities','Network and resource access','Equal participation at all stages'] }
+};
+function computeScore() {
+  const origin  = {you:30,client:20,shared:15,rw:5}[answers[1]]||0;
+  const rel     = {you:25,shared:15,rw:5}[answers[2]]||0;
+  const exec    = {you:25,shared:15,rw:5}[answers[3]]||0;
+  const support = answers[4] ? Math.max(0,10-(answers[4].length*1.25)) : 10;
+  const exp     = {novice:2,intermediate:5,experienced:10}[answers[5]]||0;
+  return origin+rel+exec+support+exp;
+}
+function modelFromScore(s) { if(s>=85)return'jv'; if(s>=65)return'strategic'; if(s>=45)return'execution'; if(s>=25)return'relationship'; return'referral'; }
+function selectOption(el) {
+  const q=el.dataset.q; document.querySelectorAll(`[data-q="${q}"].option-card`).forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); answers[parseInt(q)]=el.dataset.val;
+  const nb=document.getElementById(`next-${q}`); if(nb)nb.disabled=false; updateSidebar();
+}
+function toggleCheck(el) {
+  el.classList.toggle('selected'); const q=parseInt(el.dataset.q);
+  answers[q]=Array.from(document.querySelectorAll(`[data-q="${q}"].checkbox-card.selected`)).map(c=>c.dataset.val); updateSidebar();
+}
+function goNext(step) { document.getElementById(`q${step}`).classList.remove('active'); document.getElementById(`q${step+1}`).classList.add('active'); currentStep=step+1; updateProgress(); }
+function goBack() { document.getElementById(`q${currentStep}`).classList.remove('active'); document.getElementById(`q${currentStep-1}`).classList.add('active'); currentStep--; updateProgress(); }
+function updateProgress() {
+  for(let i=1;i<=TOTAL_STEPS;i++){const dot=document.getElementById(`dot-${i}`);if(!dot)continue;dot.classList.remove('active','done');if(i<currentStep)dot.classList.add('done');else if(i===currentStep)dot.classList.add('active');const line=dot.parentElement.querySelector('.assess-step__line');if(line)line.classList.toggle('done',i<currentStep);}
+}
+function updateSidebar() {
+  if(Object.keys(answers).filter(k=>answers[k]!==undefined).length<2)return;
+  const m=MODELS[modelFromScore(computeScore())];
+  document.getElementById('sidebar-model').innerHTML=m.name;
+  document.getElementById('sidebar-fee').style.display='block'; document.getElementById('sidebar-fee-text').textContent=m.fee;
+  document.getElementById('sidebar-desc').style.display='block'; document.getElementById('sidebar-desc').textContent=m.desc;
+  document.getElementById('sidebar-meter').style.display='block'; document.getElementById('sidebar-fill').style.width=Math.min((computeScore()/100)*100,100)+'%';
+}
+function showResults() {
+  const key=modelFromScore(computeScore()); const m=MODELS[key];
+  document.getElementById('assessment').style.display='none';
+  const rs=document.getElementById('results-section'); rs.classList.add('active'); rs.scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('result-title').textContent='Recommended Model: '+m.name;
+  document.getElementById('result-model-name').textContent=m.name;
+  document.getElementById('result-model-why').textContent=m.why;
+  document.getElementById('result-fee').textContent=m.fee;
+  document.getElementById('bar-you').style.width=m.youPct+'%';
+  document.getElementById('pct-you').textContent='You: '+m.youPct+'%';
+  document.getElementById('pct-rw').textContent='RW: '+(100-m.youPct)+'%';
+  document.getElementById('resp-you').innerHTML=m.youRoles.map(r=>`<li class="resp-col__item">${r}</li>`).join('');
+  document.getElementById('resp-rw').innerHTML=m.rwRoles.map(r=>`<li class="resp-col__item">${r}</li>`).join('');
+  window._selectedModel=m; window._selectedModelKey=key;
+}
+function showSubmission() {
+  const m=window._selectedModel; if(!m)return;
+  document.getElementById('results-section').style.display='none';
+  const ss=document.getElementById('submission-section'); ss.classList.add('active'); ss.scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('form-context-model').textContent=m.name;
+  document.getElementById('form-context-fee').textContent=m.fee;
+  const txTypes={ma:'M&A',capital:'Capital Raising',debt:'Debt / Refinancing',restructuring:'Restructuring',valuation:'Valuation',funds:'Fund Management'};
+  document.getElementById('form-context-type').textContent=txTypes[answers[7]]||'Not specified';
+  document.getElementById('fs-model').textContent=m.name;
+  document.getElementById('fs-fee').textContent=m.fee;
+  const sizeMap={small:'lt5',mid:'5-25',upper:'25-100',large:'gt100'}; const typeMap={ma:'ma-sell',capital:'capital',debt:'debt',restructuring:'restructuring',valuation:'valuation',funds:'funds'};
+  const se=document.getElementById('f-size'); const te=document.getElementById('f-type');
+  if(se&&sizeMap[answers[6]])se.value=sizeMap[answers[6]]; if(te&&typeMap[answers[7]])te.value=typeMap[answers[7]];
+}
+function setEngaged(v) { engagedVal=v; ['yes','verbal','no'].forEach(x=>document.getElementById('eng-'+x).classList.toggle('active',x===v)); }
+function updateFileName(i) { document.getElementById('file-name-display').textContent=i.files[0]?.name||'Click to upload a file'; }
+function handleSubmit(e) { e.preventDefault(); document.getElementById('submit-form').style.display='none'; const sb=document.getElementById('success-banner'); sb.classList.add('active'); sb.scrollIntoView({behavior:'smooth'}); }
+function restartAssessment() {
+  Object.keys(answers).forEach(k=>delete answers[k]); currentStep=1;
+  document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.checkbox-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.assess-nav__next').forEach(b=>{if(b.id!=='next-4')b.disabled=true;});
+  document.querySelectorAll('.question-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('q1').classList.add('active');
+  document.getElementById('sidebar-model').innerHTML='<span class="sidebar-preview__placeholder">Answer the questions to see your recommended model.</span>';
+  document.getElementById('sidebar-fee').style.display='none'; document.getElementById('sidebar-desc').style.display='none'; document.getElementById('sidebar-meter').style.display='none';
+  updateProgress();
+  document.getElementById('results-section').classList.remove('active'); document.getElementById('results-section').style.display='';
+  document.getElementById('assessment').style.display=''; document.getElementById('assessment').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

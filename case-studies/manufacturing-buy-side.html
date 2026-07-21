@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Industrial Acquisition — RW Capital y Estrategia</title>
+<meta name="description" content="How RW advised a buy-side acquisition of a specialized manufacturer, delivering significant revenue growth and meaningful EBITDA margin expansion through disciplined deal structuring."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#154360;--navy2:#1A5276;--navy3:#0D2535;
+  --accent:#C0392B;--light:#F8F7F4;--white:#ffffff;
+  --border:#E5E7EB;--text:#2D2D2D;--muted:#6B7280;
+  --radius:12px;--radius-lg:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--light);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;
+  background:rgba(13,37,53,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.topbar__logo img{height:36px;background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:6px}
+.topbar__back{
+  display:flex;align-items:center;gap:8px;
+  color:rgba(255,255,255,0.55);font-size:0.78rem;font-weight:600;
+  letter-spacing:0.05em;transition:color .2s;
+}
+.topbar__back:hover{color:#fff}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(145deg,#0A1E2E 0%,#0D2535 40%,#154360 75%,#1A5276 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 40px 80px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+}
+.hero__tag{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:100px;padding:8px 22px;margin-bottom:44px;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.6);opacity:0;transform:translateY(20px);
+}
+.hero__tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.hero__tag-divider{width:1px;height:12px;background:rgba(255,255,255,0.2)}
+.hero__title{
+  font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;
+  color:#fff;line-height:1.1;max-width:780px;margin-bottom:24px;
+  opacity:0;transform:translateY(30px);
+}
+.hero__title em{font-style:italic;color:rgba(255,255,255,0.6)}
+.hero__sub{
+  font-size:1rem;color:rgba(255,255,255,0.5);max-width:480px;
+  line-height:1.8;margin-bottom:64px;opacity:0;transform:translateY(20px);
+}
+.hero__stats{
+  display:flex;gap:2px;opacity:0;transform:translateY(20px);
+}
+.hero__stat{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);
+  padding:28px 52px;text-align:center;
+}
+.hero__stat:first-child{border-radius:16px 0 0 16px}
+.hero__stat:last-child{border-radius:0 16px 16px 0}
+.hero__stat-val{
+  font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:800;
+  color:#fff;line-height:1;margin-bottom:8px;
+}
+.hero__stat-label{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+.hero__scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:rgba(255,255,255,0.25);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;
+  opacity:0;animation:bounce 2.4s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* SECTIONS */
+.section{padding:120px 40px}
+.container{max-width:1080px;margin:0 auto}
+.sec-label{
+  display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+}
+.sec-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);
+  font-weight:800;line-height:1.15;margin-bottom:18px;
+}
+.sec-body{font-size:0.97rem;color:var(--muted);max-width:580px;line-height:1.85}
+
+/* TARGET */
+.target-section{background:var(--light)}
+.attr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px}
+.attr-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:32px 24px;transition:transform .25s,box-shadow .25s;opacity:0;transform:translateY(40px);
+}
+.attr-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(21,67,96,0.1)}
+.attr-icon{
+  width:46px;height:46px;background:rgba(21,67,96,0.07);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+}
+.attr-title{font-weight:700;font-size:0.93rem;color:var(--navy);margin-bottom:8px}
+.attr-desc{font-size:0.8rem;color:var(--muted);line-height:1.65}
+
+/* DEAL */
+.deal-section{background:var(--white)}
+.deal-visual{
+  margin-top:64px;display:flex;flex-direction:column;align-items:center;
+  gap:0;opacity:0;transform:translateY(30px);
+}
+.deal-amount{
+  font-family:'Playfair Display',serif;font-size:clamp(3.2rem,7vw,5.5rem);
+  font-weight:800;color:var(--navy);line-height:1;text-align:center;margin-bottom:6px;
+}
+.deal-amount-label{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:44px;text-align:center;
+}
+.deal-parts{
+  display:grid;grid-template-columns:1fr auto 1fr;width:100%;max-width:660px;margin-bottom:32px;
+}
+.deal-part{padding:32px 28px;text-align:center}
+.deal-part--cash{background:var(--navy);border-radius:16px 0 0 16px}
+.deal-part--earnout{
+  background:rgba(21,67,96,0.04);border:1.5px dashed var(--navy);
+  border-left:none;border-radius:0 16px 16px 0;
+}
+.deal-part-sep{width:1px;background:var(--border)}
+.deal-part-title{
+  font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:8px;
+}
+.deal-part--cash .deal-part-title{color:#fff}
+.deal-part--earnout .deal-part-title{color:var(--navy)}
+.deal-part-sub{font-size:0.8rem}
+.deal-part--cash .deal-part-sub{color:rgba(255,255,255,0.5)}
+.deal-part--earnout .deal-part-sub{color:var(--muted)}
+.deal-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent);color:#fff;padding:10px 24px;border-radius:100px;
+  font-size:0.8rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:28px;
+  opacity:0;transform:scale(0.7);
+}
+.deal-caption{
+  font-size:0.9rem;color:var(--muted);text-align:center;max-width:500px;
+  line-height:1.85;font-style:italic;opacity:0;
+}
+
+/* RESULTS */
+.results-section{background:var(--navy3)}
+.results-section .sec-title{color:#fff}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px;margin-bottom:48px}
+.kpi-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);
+  border-radius:var(--radius-lg);padding:36px 20px;text-align:center;
+  transition:border-color .25s,background .25s;opacity:0;transform:translateY(50px);
+}
+.kpi-card:hover{border-color:rgba(255,255,255,0.22);background:rgba(255,255,255,0.07)}
+.kpi-val{
+  font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:800;
+  color:#fff;line-height:1;margin-bottom:12px;
+}
+.kpi-lbl{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);line-height:1.5}
+.kpi-delta{
+  display:inline-block;margin-top:10px;font-size:0.7rem;font-weight:700;
+  color:#27ae60;background:rgba(39,174,96,0.15);padding:3px 10px;border-radius:20px;
+}
+
+/* EBITDA BARS */
+.ebitda-cmp{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);
+  border-radius:var(--radius-lg);padding:40px 48px;
+}
+.ebitda-cmp-title{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);margin-bottom:32px;
+}
+.ebitda-row{display:grid;grid-template-columns:110px 1fr 90px;align-items:center;gap:20px;margin-bottom:18px}
+.ebitda-row:last-child{margin-bottom:0}
+.ebitda-lbl{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.4);text-align:right}
+.ebitda-track{height:10px;background:rgba(255,255,255,0.07);border-radius:5px;overflow:hidden}
+.ebitda-fill{height:100%;border-radius:5px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.ebitda-fill--b{background:rgba(255,255,255,0.22)}
+.ebitda-fill--a{background:linear-gradient(90deg,#1e8449,#27ae60)}
+.ebitda-num{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}
+.ebitda-num.after{color:#27ae60}
+.ebitda-num .pp{display:block;font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:700;color:#27ae60}
+
+/* FACTORS */
+.factors-section{background:var(--light)}
+.factors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.factor-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:40px 32px;position:relative;overflow:hidden;
+  transition:transform .25s,box-shadow .25s;opacity:0;transform:translateY(40px);
+}
+.factor-card::before{
+  content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+  background:var(--accent);transform:scaleY(0);transform-origin:top;transition:transform .35s ease;
+}
+.factor-card:hover::before{transform:scaleY(1)}
+.factor-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(21,67,96,0.1)}
+.factor-num{
+  font-family:'Playfair Display',serif;font-size:3rem;font-weight:800;
+  color:var(--border);line-height:1;margin-bottom:20px;
+}
+.factor-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:12px}
+.factor-desc{font-size:0.86rem;color:var(--muted);line-height:1.8}
+
+/* LESSONS */
+.lessons-section{background:var(--white)}
+.lessons-list{margin-top:56px}
+.lesson-item{
+  display:grid;grid-template-columns:72px 1fr;gap:32px;
+  padding:40px 0;border-bottom:1px solid var(--border);align-items:start;
+  opacity:0;transform:translateX(-30px);
+}
+.lesson-item:first-child{border-top:1px solid var(--border)}
+.lesson-num{
+  font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:800;
+  color:var(--border);line-height:1;padding-top:2px;
+}
+.lesson-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:10px;line-height:1.3}
+.lesson-body{font-size:0.88rem;color:var(--muted);line-height:1.85;max-width:560px}
+
+/* CTA */
+.cta-section{
+  background:linear-gradient(140deg,var(--navy),var(--navy3));
+  padding:120px 40px;text-align:center;
+}
+.cta-label{display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:24px}
+.cta-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;
+  color:#fff;margin-bottom:18px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.15;
+}
+.cta-body{font-size:0.97rem;color:rgba(255,255,255,0.5);max-width:440px;margin:0 auto 48px;line-height:1.85}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 34px;border-radius:8px;font-weight:700;font-size:0.9rem;
+  cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif;
+}
+.btn--primary{background:#fff;color:var(--navy)}
+.btn--primary:hover{background:#EDF2F7;transform:translateY(-1px)}
+.btn--ghost{background:transparent;color:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.18)}
+.btn--ghost:hover{border-color:rgba(255,255,255,0.45);color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .attr-grid{grid-template-columns:1fr 1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .factors-grid{grid-template-columns:1fr}
+  .topbar{padding:14px 24px}
+  .section{padding:80px 24px}
+}
+@media(max-width:640px){
+  .attr-grid{grid-template-columns:1fr}
+  .deal-parts{grid-template-columns:1fr}
+  .deal-part-sep{width:100%;height:1px}
+  .deal-part--cash{border-radius:16px 16px 0 0}
+  .deal-part--earnout{border-left:1.5px dashed var(--navy);border-top:none;border-radius:0 0 16px 16px}
+  .hero__stats{flex-direction:column;gap:2px}
+  .hero__stat:first-child{border-radius:14px 14px 0 0}
+  .hero__stat:last-child{border-radius:0 0 14px 14px}
+  .lesson-item{grid-template-columns:48px 1fr;gap:16px}
+  .lesson-num{font-size:1.8rem}
+  .ebitda-cmp{padding:28px 20px}
+  .ebitda-row{grid-template-columns:70px 1fr 68px;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="../index.html" class="topbar__logo">
+    <img src="../images/rw-logo.png" alt="RW Capital y Estrategia"/>
+  </a>
+  <a href="../en/case-studies.html" class="topbar__back">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    All Case Studies
+  </a>
+</header>
+
+<!-- ① HERO -->
+<section class="hero">
+  <div class="hero__tag">
+    <div class="hero__tag-dot"></div>
+    Buy-Side M&amp;A
+    <div class="hero__tag-divider"></div>
+    Industrials
+  </div>
+  <h1 class="hero__title">The Acquisition That Delivered<br><em>Sustained Growth</em></h1>
+  <p class="hero__sub">A strategic buy-side mandate. A specialized manufacturer. A structure designed to align incentives and unlock lasting value.</p>
+  <div class="hero__scroll">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ② TARGET -->
+<section class="section target-section" id="target">
+  <div class="container">
+    <span class="sec-label">The Target</span>
+    <h2 class="sec-title" style="color:var(--navy)">A Specialized Manufacturing Leader</h2>
+    <p class="sec-body">An established manufacturer with strong technical capabilities, experienced management, and a solid financial foundation — operating in attractive industrial end markets with significant untapped growth potential.</p>
+    <div class="attr-grid">
+      <div class="attr-card">
+        <div class="attr-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#154360" stroke-width="1.6"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="attr-title">Specialized Components</div>
+        <div class="attr-desc">Core manufacturing specialization with technical depth and proven process expertise across demanding applications.</div>
+      </div>
+      <div class="attr-card">
+        <div class="attr-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#154360" stroke-width="1.6"><rect x="2" y="3" width="7" height="9"/><rect x="15" y="3" width="7" height="5"/><rect x="15" y="12" width="7" height="9"/><rect x="2" y="16" width="7" height="5"/><rect x="9" y="7" width="6" height="10"/></svg>
+        </div>
+        <div class="attr-title">Attractive End Markets</div>
+        <div class="attr-desc">Serving high-value industrial sectors with established customer relationships, long-term contracts, and favorable market dynamics.</div>
+      </div>
+      <div class="attr-card">
+        <div class="attr-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#154360" stroke-width="1.6"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div class="attr-title">Expert Leadership</div>
+        <div class="attr-desc">Experienced management team with strong technical and operational capabilities in place.</div>
+      </div>
+      <div class="attr-card">
+        <div class="attr-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#154360" stroke-width="1.6"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+        <div class="attr-title">Growth Foundation</div>
+        <div class="attr-desc">Solid financials with untapped potential across geographies and adjacent product lines.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ DEAL STRUCTURE -->
+<section class="section deal-section" id="deal">
+  <div class="container">
+    <span class="sec-label">The Structure</span>
+    <h2 class="sec-title" style="color:var(--navy)">A Deal Built for Alignment</h2>
+    <p class="sec-body">The structure was designed so the people who built the business would be motivated to help grow it — creating shared upside from the moment the ink dried.</p>
+    <div class="deal-visual">
+      <div class="deal-parts">
+        <div class="deal-part deal-part--cash">
+          <div class="deal-part-title">Upfront Cash</div>
+          <div class="deal-part-sub">Paid at closing</div>
+        </div>
+        <div class="deal-part-sep"></div>
+        <div class="deal-part deal-part--earnout">
+          <div class="deal-part-title">Performance Earn-Out</div>
+          <div class="deal-part-sub">Multi-year structure</div>
+        </div>
+      </div>
+      <div class="deal-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Structured at Attractive Market Multiples
+      </div>
+      <p class="deal-caption">"The earn-out structure kept the founding team engaged and motivated precisely when continuity mattered most — turning former owners into invested partners in post-acquisition growth."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ④ RESULTS -->
+<section class="section results-section" id="results">
+  <div class="container">
+    <span class="sec-label">Post-Acquisition Performance</span>
+    <h2 class="sec-title">The Outcomes That Defined Success</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-val">↑</div>
+        <div class="kpi-lbl">Double-Digit Revenue Growth</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">↑</div>
+        <div class="kpi-lbl">EBITDA Margin Expansion</div>
+        <div class="kpi-delta">▲ Material improvement</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">↓</div>
+        <div class="kpi-lbl">Material Cost Reduction</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">↑</div>
+        <div class="kpi-lbl">Revenue from New Markets</div>
+      </div>
+    </div>
+    <div class="ebitda-cmp">
+      <div class="ebitda-cmp-title">EBITDA Margin — Before vs. After Acquisition</div>
+      <div class="ebitda-row">
+        <div class="ebitda-lbl">Before</div>
+        <div class="ebitda-track"><div class="ebitda-fill ebitda-fill--b" data-w="66"></div></div>
+        <div class="ebitda-num">Baseline</div>
+      </div>
+      <div class="ebitda-row">
+        <div class="ebitda-lbl">After</div>
+        <div class="ebitda-track"><div class="ebitda-fill ebitda-fill--a" data-w="75"></div></div>
+        <div class="ebitda-num after">Expanded<span class="pp">▲ Meaningful gain</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ SUCCESS FACTORS -->
+<section class="section factors-section" id="factors">
+  <div class="container">
+    <span class="sec-label">Success Factors</span>
+    <h2 class="sec-title" style="color:var(--navy)">Three Principles Behind the Outcome</h2>
+    <div class="factors-grid">
+      <div class="factor-card">
+        <div class="factor-num">01</div>
+        <div class="factor-title">Leadership Continuity</div>
+        <div class="factor-desc">Retaining executive and technical teams ensured institutional knowledge didn't leave with the sale. The people who built it continued to drive it — with ownership skin in the game.</div>
+      </div>
+      <div class="factor-card">
+        <div class="factor-num">02</div>
+        <div class="factor-title">Aligned Incentives</div>
+        <div class="factor-desc">A performance-based earn-out structure kept the selling team engaged through integration — transforming former owners into motivated partners invested in exceeding targets.</div>
+      </div>
+      <div class="factor-card">
+        <div class="factor-num">03</div>
+        <div class="factor-title">Strategic Integration</div>
+        <div class="factor-desc">Balanced autonomy with deliberate synergy creation. What worked was preserved; new capabilities were built systematically on top of proven operational strengths.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ LESSONS -->
+<section class="section lessons-section" id="lessons">
+  <div class="container">
+    <span class="sec-label">Key Lessons</span>
+    <h2 class="sec-title" style="color:var(--navy)">What This Transaction Teaches</h2>
+    <div class="lessons-list">
+      <div class="lesson-item">
+        <div class="lesson-num">01</div>
+        <div>
+          <div class="lesson-title">Value Technical Expertise Beyond the Financials</div>
+          <div class="lesson-body">The knowledge embedded in a specialized manufacturing team is a long-term asset that no financial model fully captures. Evaluate the workforce's expertise as a strategic moat — not just a cost line.</div>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">02</div>
+        <div>
+          <div class="lesson-title">Look Beyond Current Financials to the Future Pipeline</div>
+          <div class="lesson-body">The best acquisitions buy the future, not the past. Assess innovation pipeline, product development potential, and market positioning — not just trailing EBITDA.</div>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">03</div>
+        <div>
+          <div class="lesson-title">Structure Deals to Create Alignment</div>
+          <div class="lesson-body">Earn-out clauses that tie compensation to post-acquisition performance keep selling teams engaged precisely when their motivation matters most. Structure shapes behavior.</div>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">04</div>
+        <div>
+          <div class="lesson-title">Retain What Works — Especially the People</div>
+          <div class="lesson-body">Integration succeeds when people feel continuity, not disruption. Prioritizing key employee retention — especially those with critical expertise and relationships — is not optional in technical businesses.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ CTA -->
+<section class="cta-section">
+  <div class="container">
+    <span class="cta-label">RW Capital y Estrategia</span>
+    <h2 class="cta-title">Ready to Structure Your Next Acquisition?</h2>
+    <p class="cta-body">RW brings the expertise to identify, value, structure, and close strategic transactions — and the judgment to know what makes them work long after closing day.</p>
+    <div class="cta-btns">
+      <a href="../contact.html" class="btn btn--primary">Start a Conversation</a>
+      <a href="../en/case-studies.html" class="btn btn--ghost">View All Case Studies</a>
+    </div>
+  </div>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- HERO entrance ---- */
+if (!noMotion) {
+  gsap.set(['.hero__tag','.hero__title','.hero__sub','.hero__stats'], {opacity:0, y:30});
+  const tl = gsap.timeline({delay:0.3});
+  tl.to('.hero__tag',  {opacity:1,y:0,duration:0.8,ease:'power2.out'})
+    .to('.hero__title', {opacity:1,y:0,duration:0.9,ease:'power2.out'},'-=0.5')
+    .to('.hero__sub',   {opacity:1,y:0,duration:0.8,ease:'power2.out'},'-=0.55')
+    .to('.hero__stats', {opacity:1,y:0,duration:0.8,ease:'power2.out'},'-=0.5')
+    .to('.hero__scroll',{opacity:1,duration:0.5},'-=0.2');
+} else {
+  ['.hero__tag','.hero__title','.hero__sub','.hero__stats','.hero__scroll'].forEach(s=>{
+    const el=document.querySelector(s); if(el){el.style.opacity='1';el.style.transform='none';}
+  });
+}
+
+/* ---- Target cards ---- */
+gsap.to('.attr-card',{
+  scrollTrigger:{trigger:'#target',start:'top 68%'},
+  opacity:1,y:0,duration:0.7,stagger:0.12,ease:'power2.out'
+});
+
+/* ---- Deal visual ---- */
+gsap.to('.deal-visual',{
+  scrollTrigger:{trigger:'#deal',start:'top 65%'},
+  opacity:1,y:0,duration:0.9,ease:'power2.out'
+});
+gsap.fromTo('.deal-badge',
+  {opacity:0,scale:0.6},
+  {opacity:1,scale:1,duration:0.7,ease:'back.out(1.6)',
+   scrollTrigger:{trigger:'#deal',start:'top 50%'}}
+);
+gsap.to('.deal-caption',{
+  scrollTrigger:{trigger:'#deal',start:'top 45%'},
+  opacity:1,duration:0.8,ease:'power1.out'
+});
+
+/* ---- KPI cards ---- */
+gsap.to('.kpi-card',{
+  scrollTrigger:{trigger:'#results',start:'top 68%'},
+  opacity:1,y:0,duration:0.7,stagger:0.13,ease:'power2.out'
+});
+
+/* ---- KPI count-up ---- */
+let kpiDone = false;
+ScrollTrigger.create({
+  trigger:'.kpi-grid', start:'top 70%',
+  onEnter:()=>{
+    if(kpiDone) return; kpiDone=true;
+    document.querySelectorAll('[data-target]').forEach(el=>{
+      const target=parseFloat(el.dataset.target);
+      const prefix=el.dataset.prefix||'';
+      const suffix=el.dataset.suffix||'';
+      const dec=target%1!==0;
+      let cur=0; const step=target/55;
+      const iv=setInterval(()=>{
+        cur=Math.min(cur+step,target);
+        el.textContent=prefix+(dec?cur.toFixed(1):Math.round(cur))+suffix;
+        if(cur>=target) clearInterval(iv);
+      },22);
+    });
+  }
+});
+
+/* ---- EBITDA bars ---- */
+let barsDone=false;
+ScrollTrigger.create({
+  trigger:'.ebitda-cmp', start:'top 72%',
+  onEnter:()=>{
+    if(barsDone) return; barsDone=true;
+    document.querySelectorAll('.ebitda-fill').forEach(el=>{
+      el.style.width=el.dataset.w+'%';
+    });
+  }
+});
+
+/* ---- Factor cards ---- */
+gsap.to('.factor-card',{
+  scrollTrigger:{trigger:'#factors',start:'top 68%'},
+  opacity:1,y:0,duration:0.7,stagger:0.15,ease:'power2.out'
+});
+
+/* ---- Lesson items ---- */
+gsap.to('.lesson-item',{
+  scrollTrigger:{trigger:'#lessons',start:'top 68%'},
+  opacity:1,x:0,duration:0.7,stagger:0.12,ease:'power2.out'
+});
+
+/* ---- CTA ---- */
+gsap.from('.cta-title,.cta-body,.cta-btns',{
+  scrollTrigger:{trigger:'.cta-section',start:'top 72%'},
+  opacity:0,y:28,duration:0.8,stagger:0.14,ease:'power2.out'
+});
+</script>
+</body>
+</html>

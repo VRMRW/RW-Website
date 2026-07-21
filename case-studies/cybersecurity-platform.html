@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cybersecurity Platform Growth — RW Capital y Estrategia</title>
+<meta name="description" content="How RW helped build a leading cybersecurity platform through strategic consolidation, cross-border expansion, and a business model transformation that unlocked institutional investment."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080F1A;--bg2:#0D1B2E;--bg3:#0F2040;
+  --navy:#154360;--navy2:#1A5276;
+  --accent:#C0392B;--accent2:#E74C3C;
+  --border:rgba(255,255,255,0.08);
+  --text:#fff;--muted:rgba(255,255,255,0.52);--dim:rgba(255,255,255,0.28);
+  --green:#27ae60;--green2:#2ecc71;
+  --radius:12px;--radius-lg:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;
+  background:rgba(8,15,26,0.94);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.topbar__logo img{height:36px;background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:6px}
+.topbar__back{
+  display:flex;align-items:center;gap:8px;
+  color:var(--muted);font-size:0.78rem;font-weight:600;
+  letter-spacing:0.05em;transition:color .2s;
+}
+.topbar__back:hover{color:#fff}
+
+/* HERO */
+.hero{
+  min-height:100vh;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 40px 100px;
+  position:relative;overflow:hidden;
+}
+/* animated dot grid */
+.hero__grid{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.hero__grid::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,0.065) 1px,transparent 1px);
+  background-size:44px 44px;
+  animation:gridDrift 18s linear infinite;
+}
+.hero__grid::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%, rgba(8,15,26,0) 0%, var(--bg) 75%);
+}
+@keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(44px)}}
+/* radial glow behind title */
+.hero__glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);
+  width:800px;height:400px;
+  background:radial-gradient(ellipse, rgba(21,67,96,0.35) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero__tag{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:100px;padding:8px 22px;margin-bottom:44px;
+  font-size:0.67rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--muted);opacity:0;transform:translateY(20px);
+}
+.hero__tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.hero__tag-div{width:1px;height:12px;background:rgba(255,255,255,0.15)}
+.hero__eyebrow{
+  position:relative;z-index:1;
+  font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:16px;opacity:0;
+}
+.hero__revenue{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;gap:28px;
+  margin-bottom:32px;opacity:0;transform:translateY(24px);
+}
+.hero__rev-from{
+  font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:800;line-height:1;color:var(--muted);
+}
+.hero__rev-arrow{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--accent);
+}
+.hero__rev-arrow svg{flex-shrink:0}
+.hero__rev-years{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim)}
+.hero__rev-to{
+  font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:800;line-height:1;color:#fff;
+}
+.hero__title{
+  position:relative;z-index:1;
+  font-family:'Playfair Display',serif;font-size:clamp(1.3rem,2.5vw,1.9rem);
+  font-weight:400;font-style:italic;color:var(--muted);
+  max-width:540px;margin:0 auto 60px;opacity:0;transform:translateY(16px);
+  line-height:1.5;
+}
+.hero__pills{
+  position:relative;z-index:1;
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  opacity:0;transform:translateY(16px);
+}
+.hero__pill{
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  border-radius:100px;padding:9px 20px;
+  font-size:0.75rem;font-weight:700;letter-spacing:0.06em;
+  text-align:center;
+}
+.hero__pill-val{color:#fff;font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:800;display:block;line-height:1;margin-bottom:3px}
+.hero__pill-lbl{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim)}
+.hero__scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--dim);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  opacity:0;animation:bounce 2.4s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* SECTIONS */
+.section{padding:120px 40px}
+.container{max-width:1080px;margin:0 auto}
+.sec-label{
+  display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+}
+.sec-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);
+  font-weight:800;line-height:1.15;color:#fff;margin-bottom:18px;
+}
+.sec-body{font-size:0.97rem;color:var(--muted);max-width:580px;line-height:1.85}
+
+/* STARTING POINT */
+.start-section{background:var(--bg2)}
+.start-snapshot{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;
+}
+.snap-card{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:32px 24px;
+  opacity:0;transform:translateY(40px);
+}
+.snap-val{
+  font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:800;
+  color:#fff;line-height:1;margin-bottom:10px;
+}
+.snap-lbl{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.snap-note{font-size:0.82rem;color:var(--muted);line-height:1.6}
+.snap-tag{
+  display:inline-block;margin-top:12px;
+  font-size:0.68rem;font-weight:700;padding:4px 12px;border-radius:20px;
+  background:rgba(192,57,43,0.15);color:var(--accent);
+}
+
+/* THE THESIS */
+.thesis-section{background:var(--bg)}
+.thesis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.thesis-card{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:40px 28px;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(40px);
+  transition:border-color .3s,background .3s;
+}
+.thesis-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(192,57,43,0.06),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.thesis-card:hover{border-color:rgba(192,57,43,0.35);background:rgba(255,255,255,0.05)}
+.thesis-card:hover::after{opacity:1}
+.thesis-num{
+  font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:800;
+  color:rgba(192,57,43,0.18);line-height:1;margin-bottom:24px;
+}
+.thesis-icon{margin-bottom:20px}
+.thesis-title{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;color:#fff;margin-bottom:12px}
+.thesis-desc{font-size:0.86rem;color:var(--muted);line-height:1.8}
+
+/* GROWTH VISUAL */
+.growth-section{background:var(--bg2);overflow:hidden}
+.growth-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.growth-chart-wrap{position:relative}
+.growth-svg{width:100%;height:auto;display:block}
+.growth-path{
+  stroke:url(#lineGrad);stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.growth-fill-path{fill:url(#fillGrad);opacity:0.7}
+.growth-label-start,.growth-label-end{
+  font-family:'Playfair Display',serif;font-weight:800;line-height:1;
+}
+.growth-label-start{font-size:1.6rem;fill:rgba(255,255,255,0.4)}
+.growth-label-end{font-size:2.2rem;fill:#fff}
+.growth-sub-end{font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;fill:rgba(255,255,255,0.35)}
+.growth-dot-start{fill:rgba(255,255,255,0.3)}
+.growth-dot-end{fill:var(--accent)}
+.growth-stats{display:flex;flex-direction:column;gap:40px}
+.gstat{opacity:0;transform:translateX(30px)}
+.gstat-label{font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.gstat-val{
+  font-family:'Playfair Display',serif;font-size:3rem;font-weight:800;
+  color:#fff;line-height:1;margin-bottom:6px;
+}
+.gstat-sub{font-size:0.82rem;color:var(--muted)}
+.gstat-bar{
+  height:4px;background:rgba(255,255,255,0.07);border-radius:2px;
+  margin-top:14px;overflow:hidden;
+}
+.gstat-bar-fill{height:100%;border-radius:2px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.gstat-bar-fill--rev{background:linear-gradient(90deg,var(--navy2),var(--accent))}
+.gstat-bar-fill--ebitda{background:linear-gradient(90deg,var(--navy2),var(--green))}
+.gstat-bar-fill--rec{background:linear-gradient(90deg,var(--navy2),#3498db)}
+
+/* BIG KPIs */
+.kpis-section{background:var(--bg3)}
+.kpis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px;border-radius:var(--radius-lg);overflow:hidden}
+.big-kpi{
+  background:rgba(255,255,255,0.03);
+  padding:56px 36px;text-align:center;
+  opacity:0;transform:translateY(50px);
+}
+.big-kpi-val{
+  font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,5rem);
+  font-weight:800;color:#fff;line-height:1;margin-bottom:14px;
+}
+.big-kpi-lbl{font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);line-height:1.5}
+.big-kpi-sub{font-size:0.8rem;color:var(--muted);margin-top:10px;line-height:1.5}
+.big-kpi--accent .big-kpi-val{
+  background:linear-gradient(135deg,#fff 30%,var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* PLATFORM */
+.platform-section{background:var(--bg)}
+.platform-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:64px}
+.platform-pillars{display:flex;flex-direction:column;gap:0}
+.pillar{
+  padding:32px 0;border-bottom:1px solid var(--border);
+  opacity:0;transform:translateX(-24px);
+}
+.pillar:first-child{border-top:1px solid var(--border)}
+.pillar-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px}
+.pillar-desc{font-size:0.86rem;color:var(--muted);line-height:1.8}
+.platform-aside{opacity:0;transform:translateX(24px)}
+.aside-card{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:36px 32px;margin-bottom:20px;
+}
+.aside-card:last-child{margin-bottom:0}
+.aside-title{font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.geo-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.geo-chip{
+  background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  border-radius:6px;padding:8px 14px;font-size:0.8rem;font-weight:600;color:#fff;
+}
+.aside-note{font-size:0.82rem;color:var(--muted);line-height:1.75}
+.pe-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.25);
+  border-radius:8px;padding:12px 18px;margin-top:16px;
+  font-size:0.82rem;font-weight:600;color:var(--green2);
+}
+.pe-dot{width:7px;height:7px;border-radius:50%;background:var(--green2);flex-shrink:0}
+
+/* MODEL EVOLUTION */
+.model-section{background:var(--bg2)}
+.model-compare{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:0;
+  margin-top:64px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;
+  opacity:0;transform:translateY(30px);
+}
+.model-col{padding:48px 40px}
+.model-col--before{background:rgba(255,255,255,0.02)}
+.model-col--after{background:rgba(21,67,96,0.12)}
+.model-arrow-col{
+  display:flex;align-items:center;justify-content:center;
+  padding:0 24px;background:rgba(255,255,255,0.02);
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+}
+.model-label{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.model-col--before .model-label{color:var(--dim)}
+.model-col--after .model-label{color:var(--accent)}
+.model-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:20px}
+.model-items{list-style:none;display:flex;flex-direction:column;gap:12px}
+.model-items li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:0.86rem;color:var(--muted);line-height:1.6;
+}
+.model-items li::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  flex-shrink:0;margin-top:7px;
+}
+.model-col--before .model-items li::before{background:var(--dim)}
+.model-col--after .model-items li::before{background:var(--accent)}
+
+/* CTA */
+.cta-section{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:120px 40px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:600px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(192,57,43,0.5),transparent);
+}
+.cta-label{display:block;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);margin-bottom:24px}
+.cta-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;
+  color:#fff;margin-bottom:18px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.15;
+}
+.cta-body{font-size:0.97rem;color:var(--muted);max-width:440px;margin:0 auto 48px;line-height:1.85}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 34px;border-radius:8px;font-weight:700;font-size:0.9rem;
+  cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif;
+}
+.btn--primary{background:#fff;color:#0D1B2E}
+.btn--primary:hover{background:#EEF2F7;transform:translateY(-1px)}
+.btn--ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border)}
+.btn--ghost:hover{border-color:rgba(255,255,255,0.4);color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .start-snapshot{grid-template-columns:1fr 1fr}
+  .thesis-grid{grid-template-columns:1fr}
+  .growth-inner{grid-template-columns:1fr;gap:48px}
+  .kpis-grid{grid-template-columns:1fr}
+  .kpis-grid .big-kpi{border-bottom:1px solid var(--border)}
+  .platform-grid{grid-template-columns:1fr}
+  .model-compare{grid-template-columns:1fr}
+  .model-arrow-col{display:none}
+  .model-col--after{border-top:1px solid var(--border)}
+  .topbar{padding:14px 24px}
+  .section{padding:80px 24px}
+}
+@media(max-width:640px){
+  .start-snapshot{grid-template-columns:1fr}
+  .hero__revenue{gap:16px}
+  .hero__rev-from,.hero__rev-to{font-size:3rem}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="../index.html" class="topbar__logo">
+    <img src="../images/rw-logo.png" alt="RW Capital y Estrategia"/>
+  </a>
+  <a href="../en/case-studies.html" class="topbar__back">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    All Case Studies
+  </a>
+</header>
+
+<!-- ① HERO -->
+<section class="hero">
+  <div class="hero__grid"></div>
+  <div class="hero__glow"></div>
+  <div class="hero__tag">
+    <div class="hero__tag-dot"></div>
+    Capital Raising
+    <div class="hero__tag-div"></div>
+    Growth M&amp;A
+    <div class="hero__tag-div"></div>
+    Cross-Border
+  </div>
+  <div class="hero__revenue">
+    <div class="hero__rev-from" style="font-size:clamp(1.8rem,4vw,3rem);color:rgba(255,255,255,0.4)">Fragmented</div>
+    <div class="hero__rev-arrow">
+      <svg width="40" height="16" viewBox="0 0 40 16" fill="none"><path d="M0 8h36M30 2l8 6-8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="hero__rev-years">Multi-year</div>
+    </div>
+    <div class="hero__rev-to" style="font-size:clamp(1.8rem,4vw,3rem)">Platform</div>
+  </div>
+  <p class="hero__title">How strategic consolidation built a leading cybersecurity platform across borders.</p>
+  <div class="hero__pills">
+    <div class="hero__pill">
+      <span class="hero__pill-val" style="font-size:0.85rem;letter-spacing:0.04em">Significant</span>
+      <span class="hero__pill-lbl">Revenue Growth</span>
+    </div>
+    <div class="hero__pill">
+      <span class="hero__pill-val" style="font-size:0.85rem;letter-spacing:0.04em">Substantial</span>
+      <span class="hero__pill-lbl">EBITDA Improvement</span>
+    </div>
+    <div class="hero__pill">
+      <span class="hero__pill-val" style="font-size:0.85rem;letter-spacing:0.04em">Majority</span>
+      <span class="hero__pill-lbl">Recurring Revenue</span>
+    </div>
+  </div>
+  <div class="hero__scroll">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ② STARTING POINT -->
+<section class="section start-section" id="start">
+  <div class="container">
+    <span class="sec-label">The Starting Point</span>
+    <h2 class="sec-title">A Single Company. A Fragmented Market.</h2>
+    <p class="sec-body">The fundamentals were solid. The potential was vastly larger than the current structure could capture. The question was how to build something that could scale — across geographies, across services, across markets.</p>
+    <div class="start-snapshot">
+      <div class="snap-card">
+        <div class="snap-lbl">Revenue Profile</div>
+        <div class="snap-val" style="font-size:1.6rem;line-height:1.3">Established</div>
+        <div class="snap-note">Solid revenue base with meaningful room to grow through strategic consolidation and geographic expansion.</div>
+      </div>
+      <div class="snap-card">
+        <div class="snap-lbl">Margin Profile</div>
+        <div class="snap-val" style="font-size:1.6rem;line-height:1.3">Constrained</div>
+        <div class="snap-note">Thin margins driven by a project-based revenue model with limited operating leverage and low revenue predictability.</div>
+        <div class="snap-tag">Low predictability</div>
+      </div>
+      <div class="snap-card">
+        <div class="snap-lbl">Revenue Model</div>
+        <div class="snap-val" style="font-size:1.6rem;line-height:1.3">Project-Based</div>
+        <div class="snap-note">One-off engagements with limited recurring contracts — the key constraint on valuation multiples.</div>
+        <div class="snap-tag">No scale leverage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ THE THESIS -->
+<section class="section thesis-section" id="thesis">
+  <div class="container">
+    <span class="sec-label">The Strategy</span>
+    <h2 class="sec-title">Three Moves That Changed Everything</h2>
+    <p class="sec-body">RW identified the opportunity to build a full-stack cybersecurity platform in an underconsolidated market — then structured the three moves to make it happen.</p>
+    <div class="thesis-grid">
+      <div class="thesis-card">
+        <div class="thesis-num">01</div>
+        <div class="thesis-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(192,57,43,0.7)" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+        </div>
+        <div class="thesis-title">Multi-Company Merger</div>
+        <div class="thesis-desc">Unified specialized cybersecurity firms — spanning managed security to threat intelligence — into a single, full-stack platform. Built the capability set no single firm could offer alone.</div>
+      </div>
+      <div class="thesis-card">
+        <div class="thesis-num">02</div>
+        <div class="thesis-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(192,57,43,0.7)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <div class="thesis-title">Cross-Border Expansion</div>
+        <div class="thesis-desc">Extended operations from Mexico into the United States, establishing commercial presence in multiple markets. Unlocked North American enterprise clients while preserving operational efficiency through a rightshore model.</div>
+      </div>
+      <div class="thesis-card">
+        <div class="thesis-num">03</div>
+        <div class="thesis-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(192,57,43,0.7)" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="thesis-title">Business Model Evolution</div>
+        <div class="thesis-desc">Transformed the revenue engine from project-based engagements to long-term managed services contracts — systematically building recurring, predictable income that commands premium valuations.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ GROWTH VISUAL -->
+<section class="section growth-section" id="growth">
+  <div class="container">
+    <div class="growth-inner">
+      <div class="growth-chart-wrap">
+        <span class="sec-label">The Journey</span>
+        <svg class="growth-svg" viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#1A5276"/>
+              <stop offset="100%" style="stop-color:#C0392B"/>
+            </linearGradient>
+            <linearGradient id="fillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(192,57,43,0.18)"/>
+              <stop offset="100%" style="stop-color:rgba(192,57,43,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- Fill area -->
+          <path class="growth-fill-path" d="M 30 225 C 90 220, 160 195, 210 168 S 320 118, 390 72 L 450 32 L 450 240 L 30 240 Z"/>
+          <!-- Grid lines subtle -->
+          <line x1="30" y1="240" x2="450" y2="240" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="30" y1="180" x2="450" y2="180" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,6"/>
+          <line x1="30" y1="120" x2="450" y2="120" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,6"/>
+          <line x1="30" y1="60" x2="450" y2="60" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,6"/>
+          <!-- Main line -->
+          <path class="growth-path" d="M 30 225 C 90 220, 160 195, 210 168 S 320 118, 390 72 L 450 32"/>
+          <!-- Start dot -->
+          <circle cx="30" cy="225" r="5" class="growth-dot-start"/>
+          <!-- End dot + glow -->
+          <circle cx="450" cy="32" r="10" fill="rgba(192,57,43,0.2)"/>
+          <circle cx="450" cy="32" r="6" class="growth-dot-end"/>
+          <!-- Labels -->
+          <text x="30" y="215" class="growth-label-start" dy="-16">Start</text>
+          <text x="452" y="32" class="growth-label-end" dx="-60" dy="-18">Today</text>
+          <text x="452" y="32" class="growth-sub-end" dx="-60" dy="-6">Multi-Year Journey</text>
+        </svg>
+      </div>
+      <div class="growth-stats">
+        <div class="gstat">
+          <div class="gstat-label">Revenue</div>
+          <div class="gstat-val" style="font-size:2rem;letter-spacing:-0.01em">Significant</div>
+          <div class="gstat-sub">Multiple expansion through consolidation and new market entry</div>
+          <div class="gstat-bar"><div class="gstat-bar-fill gstat-bar-fill--rev" data-w="88"></div></div>
+        </div>
+        <div class="gstat">
+          <div class="gstat-label">EBITDA</div>
+          <div class="gstat-val" style="font-size:2rem;letter-spacing:-0.01em">Substantial</div>
+          <div class="gstat-sub">Dramatic margin improvement from business model transformation</div>
+          <div class="gstat-bar"><div class="gstat-bar-fill gstat-bar-fill--ebitda" data-w="75"></div></div>
+        </div>
+        <div class="gstat">
+          <div class="gstat-label">Recurring Revenue Share</div>
+          <div class="gstat-val" style="font-size:2rem;letter-spacing:-0.01em">Majority</div>
+          <div class="gstat-sub">Predictable, contracted revenue base commanding premium multiples</div>
+          <div class="gstat-bar"><div class="gstat-bar-fill gstat-bar-fill--rec" data-w="69"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ THE NUMBERS -->
+<section class="section kpis-section" id="kpis">
+  <div class="container">
+    <span class="sec-label">By the Numbers</span>
+    <h2 class="sec-title">The Transformation in Three Figures</h2>
+    <div class="kpis-grid">
+      <div class="big-kpi big-kpi--accent">
+        <div class="big-kpi-val" style="font-size:clamp(1.6rem,3vw,2.4rem);-webkit-text-fill-color:unset;background:none;color:#fff">Multi-fold</div>
+        <div class="big-kpi-lbl">Revenue Growth</div>
+        <div class="big-kpi-sub">Significant scale achieved<br>through consolidation</div>
+      </div>
+      <div class="big-kpi">
+        <div class="big-kpi-val" style="font-size:clamp(1.6rem,3vw,2.4rem)">Dramatic</div>
+        <div class="big-kpi-lbl">EBITDA Improvement</div>
+        <div class="big-kpi-sub">From constrained margins<br>to institutional-grade profitability</div>
+      </div>
+      <div class="big-kpi">
+        <div class="big-kpi-val" style="font-size:clamp(1.6rem,3vw,2.4rem)">Majority</div>
+        <div class="big-kpi-lbl">Recurring Revenue</div>
+        <div class="big-kpi-sub">High-predictability contracted base<br>commanding premium multiples</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ PLATFORM & GEOGRAPHY -->
+<section class="section platform-section" id="platform">
+  <div class="container">
+    <span class="sec-label">The Platform</span>
+    <h2 class="sec-title">Built to Scale Across Borders</h2>
+    <p class="sec-body">Three structural innovations made the platform sustainable — not just large.</p>
+    <div class="platform-grid">
+      <div class="platform-pillars">
+        <div class="pillar">
+          <div class="pillar-title">Rightshore Delivery Model</div>
+          <div class="pillar-desc">Latin American technical talent serving North American enterprise clients — delivering premium cybersecurity capabilities at competitive cost structures. The operational innovation behind the margin expansion.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-title">Vendor-Agnostic Architecture</div>
+          <div class="pillar-desc">Built as a technology-neutral platform for enterprise clients in regulated industries. No vendor lock-in meant broader reach, faster sales cycles, and higher customer retention across sectors.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-title">Private Equity Capital Secured</div>
+          <div class="pillar-desc">RW structured and closed a private equity investment that provided the capital required to accelerate geographic expansion and fund integration — without sacrificing strategic control.</div>
+        </div>
+      </div>
+      <div class="platform-aside">
+        <div class="aside-card">
+          <div class="aside-title">Geographic Presence</div>
+          <div class="geo-chips">
+            <div class="geo-chip">🇲🇽 Mexico</div>
+            <div class="geo-chip">🇺🇸 United States</div>
+          </div>
+          <div class="aside-note">Cross-border structure established an operational hub in Latin America and a commercial presence across multiple U.S. markets — enabling access to North American enterprise and government clients.</div>
+        </div>
+        <div class="aside-card">
+          <div class="aside-title">Capital Outcome</div>
+          <div class="aside-note">Private equity investment secured at premium valuation multiples — a direct result of the platform's recurring revenue base, geographic diversification, and vendor-agnostic positioning.</div>
+          <div class="pe-badge">
+            <div class="pe-dot"></div>
+            PE Investment Closed
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ MODEL EVOLUTION -->
+<section class="section model-section" id="model">
+  <div class="container">
+    <span class="sec-label">The Transformation</span>
+    <h2 class="sec-title">From Projects to Platform</h2>
+    <p class="sec-body">The business model shift was the engine of value creation — converting volatile, project-based income into a predictable, recurring revenue base that institutional investors prize.</p>
+    <div class="model-compare">
+      <div class="model-col model-col--before">
+        <div class="model-label">Before</div>
+        <div class="model-title">Project-Based Model</div>
+        <ul class="model-items">
+          <li>One-off engagements with limited continuity</li>
+          <li>Revenue difficult to forecast or model</li>
+          <li>High client acquisition cost per project</li>
+          <li>Limited platform leverage on costs</li>
+          <li>Valuation constrained by low predictability</li>
+        </ul>
+      </div>
+      <div class="model-arrow-col">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+      <div class="model-col model-col--after">
+        <div class="model-label">After</div>
+        <div class="model-title">Managed Services Platform</div>
+        <ul class="model-items">
+          <li>Long-term contracted managed services</li>
+          <li>Majority recurring revenue — contracted, predictable base</li>
+          <li>Expanding client relationships over time</li>
+          <li>Shared platform infrastructure — scalable margin</li>
+          <li>Premium valuation multiples at PE exit</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ CTA -->
+<section class="cta-section">
+  <div class="container">
+    <span class="cta-label">RW Capital y Estrategia</span>
+    <h2 class="cta-title">Ready to Build Your Platform Strategy?</h2>
+    <p class="cta-body">RW structures the acquisitions, raises the capital, and architects the roadmap to transform a good business into a scalable, PE-ready platform.</p>
+    <div class="cta-btns">
+      <a href="../contact.html" class="btn btn--primary">Start a Conversation</a>
+      <a href="../en/case-studies.html" class="btn btn--ghost">View All Case Studies</a>
+    </div>
+  </div>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- HERO entrance ---- */
+const heroEls = ['.hero__tag','.hero__revenue','.hero__title','.hero__pills'];
+if (!noMotion) {
+  gsap.set(heroEls, {opacity:0});
+  const tl = gsap.timeline({delay:0.3});
+  tl.to('.hero__tag',    {opacity:1,y:0,duration:0.7,ease:'power2.out'})
+    .to('.hero__revenue', {opacity:1,y:0,duration:0.9,ease:'power2.out'},'-=0.4')
+    .to('.hero__title',   {opacity:1,y:0,duration:0.8,ease:'power2.out'},'-=0.5')
+    .to('.hero__pills',   {opacity:1,y:0,duration:0.7,ease:'power2.out'},'-=0.45')
+    .to('.hero__scroll',  {opacity:1,duration:0.5},'-=0.2');
+} else {
+  heroEls.forEach(s=>{const el=document.querySelector(s);if(el){el.style.opacity='1';el.style.transform='none';}});
+}
+
+/* ---- Snap cards ---- */
+gsap.to('.snap-card',{
+  scrollTrigger:{trigger:'#start',start:'top 68%'},
+  opacity:1,y:0,duration:0.7,stagger:0.13,ease:'power2.out'
+});
+
+/* ---- Thesis cards ---- */
+gsap.to('.thesis-card',{
+  scrollTrigger:{trigger:'#thesis',start:'top 68%'},
+  opacity:1,y:0,duration:0.8,stagger:0.16,ease:'power2.out'
+});
+
+/* ---- Growth chart line ---- */
+ScrollTrigger.create({
+  trigger:'#growth', start:'top 65%',
+  onEnter:()=>{
+    const path = document.querySelector('.growth-path');
+    if (!path || noMotion) return;
+    const len = path.getTotalLength();
+    gsap.set(path, {strokeDasharray:len, strokeDashoffset:len});
+    gsap.to(path, {strokeDashoffset:0, duration:2.2, ease:'power2.inOut'});
+    gsap.from('.growth-fill-path', {opacity:0, duration:1.5, delay:0.4});
+  }
+});
+
+/* ---- Growth stats count-up ---- */
+gsap.to('.gstat',{
+  scrollTrigger:{trigger:'#growth',start:'top 60%'},
+  opacity:1,x:0,duration:0.8,stagger:0.18,ease:'power2.out'
+});
+let growthDone=false;
+ScrollTrigger.create({
+  trigger:'#growth', start:'top 55%',
+  onEnter:()=>{
+    if(growthDone) return; growthDone=true;
+    document.querySelectorAll('.gstat [data-target]').forEach(el=>{
+      const target=parseFloat(el.dataset.target);
+      const prefix=el.dataset.prefix||'';
+      const suffix=el.dataset.suffix||'';
+      const dec=target%1!==0;
+      let cur=0; const step=target/60;
+      const iv=setInterval(()=>{
+        cur=Math.min(cur+step,target);
+        el.textContent=prefix+(dec?cur.toFixed(1):Math.round(cur))+suffix;
+        if(cur>=target) clearInterval(iv);
+      },22);
+    });
+    document.querySelectorAll('.gstat-bar-fill').forEach(el=>{
+      el.style.width=el.dataset.w+'%';
+    });
+  }
+});
+
+/* ---- Big KPIs ---- */
+gsap.to('.big-kpi',{
+  scrollTrigger:{trigger:'#kpis',start:'top 68%'},
+  opacity:1,y:0,duration:0.8,stagger:0.15,ease:'power2.out'
+});
+let kpisDone=false;
+ScrollTrigger.create({
+  trigger:'#kpis', start:'top 60%',
+  onEnter:()=>{
+    if(kpisDone) return; kpisDone=true;
+    document.querySelectorAll('.big-kpi [data-target]').forEach(el=>{
+      const target=parseFloat(el.dataset.target);
+      const prefix=el.dataset.prefix||'';
+      const suffix=el.dataset.suffix||'';
+      const dec=target%1!==0;
+      let cur=0; const step=target/55;
+      const iv=setInterval(()=>{
+        cur=Math.min(cur+step,target);
+        el.textContent=prefix+(dec?cur.toFixed(1):Math.round(cur))+suffix;
+        if(cur>=target) clearInterval(iv);
+      },22);
+    });
+  }
+});
+
+/* ---- Platform pillars ---- */
+gsap.to('.pillar',{
+  scrollTrigger:{trigger:'#platform',start:'top 68%'},
+  opacity:1,x:0,duration:0.7,stagger:0.14,ease:'power2.out'
+});
+gsap.to('.platform-aside',{
+  scrollTrigger:{trigger:'#platform',start:'top 60%'},
+  opacity:1,x:0,duration:0.9,ease:'power2.out'
+});
+
+/* ---- Model compare ---- */
+gsap.to('.model-compare',{
+  scrollTrigger:{trigger:'#model',start:'top 68%'},
+  opacity:1,y:0,duration:0.9,ease:'power2.out'
+});
+
+/* ---- CTA ---- */
+gsap.from('.cta-title,.cta-body,.cta-btns',{
+  scrollTrigger:{trigger:'.cta-section',start:'top 72%'},
+  opacity:0,y:28,duration:0.8,stagger:0.14,ease:'power2.out'
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servicios — RW Capital y Estrategia</title>
+  <meta name="description" content="RW ofrece M&A, Advisory y Fund Management — asesoría integral en banca de inversión con experiencia senior en cada mandato." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Service page overrides ── */
+    .svc-subnav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: var(--nav-height);
+      z-index: 90;
+      overflow-x: auto;
+    }
+    .svc-subnav__inner {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+    }
+    .svc-subnav__cat {
+      padding: 16px 28px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .svc-subnav__cat:hover { color: var(--primary); }
+    .svc-subnav__cat.active { color: var(--primary); border-bottom-color: var(--accent); }
+    .svc-subnav__divider {
+      width: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+
+    /* Category header */
+    .cat-header {
+      padding: 72px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-header + .cat-header { padding-top: 80px; }
+    .cat-header__eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cat-header__eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .cat-header__title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .cat-header__desc {
+      font-size: 1rem;
+      color: var(--text-light);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* Service grid within a category */
+    .svc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+      margin-top: 2px;
+    }
+    @media (max-width: 700px) { .svc-grid { grid-template-columns: 1fr; } }
+
+    .svc-card {
+      background: #fff;
+      padding: 40px 36px;
+      border-top: 3px solid transparent;
+      transition: border-top-color 0.2s ease;
+    }
+    .svc-card:hover { border-top-color: var(--accent); }
+    .svc-card--full { grid-column: 1 / -1; }
+    .svc-card__num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .svc-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    .svc-card__text {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .svc-card__list {
+      list-style: none;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .svc-card__list li {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .svc-card__list li::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+    .svc-card__cta {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .svc-card__cta:hover { border-color: var(--primary); }
+
+    /* Fund Management standalone */
+    .fund-hero {
+      background: var(--primary);
+      color: #fff;
+      padding: 64px 0;
+      border-top: 3px solid var(--accent);
+    }
+    .fund-hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .fund-hero__inner { grid-template-columns: 1fr; gap: 32px; } }
+    .fund-hero__eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 12px;
+    }
+    .fund-hero__title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .fund-hero__desc {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+    }
+    .fund-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: rgba(255,255,255,0.1);
+    }
+    .fund-pillar {
+      background: rgba(255,255,255,0.06);
+      padding: 24px 20px;
+      border-top: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .fund-pillar:hover { border-top-color: var(--accent); }
+    .fund-pillar__label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+    .fund-pillar__title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .fund-pillar__desc {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+    }
+
+    .section-spacer { height: 80px; }
+  </style>
+</head>
+<body>
+
+<!-- NAVEGACIÓN -->
+<nav class="nav solid" id="main-nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="images/rw-logo.png" alt="RW Capital y Estrategia" class="nav__logo-img" />
+      </a>
+      <ul class="nav__menu" id="nav-menu">
+        <li class="nav__item"><a href="index.html" class="nav__link">Inicio</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="about.html" class="nav__link">Nosotros</a>
+          <div class="nav__dropdown">
+            <a href="about.html#our-story" class="nav__dropdown-link">Nuestra Historia</a>
+            <a href="about.html#team" class="nav__dropdown-link">Equipo</a>
+            <a href="about.html#careers" class="nav__dropdown-link">Únete</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="services.html" class="nav__link active">Servicios</a>
+          <div class="nav__dropdown">
+            <a href="services.html#ma" class="nav__dropdown-link">M&amp;A</a>
+            <a href="services.html#advisory" class="nav__dropdown-link">Advisory</a>
+            <a href="services.html#fund-management" class="nav__dropdown-link">Fund Management</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="industries.html" class="nav__link">Industrias</a>
+          <div class="nav__dropdown">
+            <a href="industries.html#financial-services" class="nav__dropdown-link">Servicios Financieros</a>
+            <a href="industries.html#technology" class="nav__dropdown-link">Tecnología</a>
+            <a href="industries.html#industrials" class="nav__dropdown-link">Industriales</a>
+            <a href="industries.html#education" class="nav__dropdown-link">Educación</a>
+            <a href="industries.html#other" class="nav__dropdown-link">Otros</a>
+          </div>
+        </li>
+        <li class="nav__item"><a href="case-studies.html" class="nav__link">Casos de Éxito</a></li>
+        <li class="nav__item"><a href="partners.html" class="nav__link">Partners</a></li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="insights.html" class="nav__link">Publicaciones</a>
+          <div class="nav__dropdown">
+            <a href="insights.html#feed" class="nav__dropdown-link">Feed de LinkedIn</a>
+            <a href="insights.html#podcast" class="nav__dropdown-link">Podcast</a>
+          </div>
+        </li>
+        <li class="nav__item nav__item--has-dropdown">
+          <a href="herramientas.html" class="nav__link">Herramientas</a>
+          <div class="nav__dropdown">
+            <a href="tools/valuation-simulator.html" class="nav__dropdown-link">Simulador de Valor</a>
+            <a href="tools/market-dashboard.html" class="nav__dropdown-link">Dashboard de Mercado</a>
+            <a href="tools/readiness-assessment.html" class="nav__dropdown-link">Diagnóstico de Preparación</a>
+          </div>
+        </li>
+        <li class="nav__item"><a href="contact.html" class="nav__link nav__cta">Contáctenos</a></li>
+      </ul>
+      <div class="lang-toggle"><span class="lang-toggle__opt lang-toggle__opt--active">ES</span><span class="lang-toggle__sep"></span><a href="en/services.html" class="lang-toggle__opt">EN</a></div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero__pattern"></div>
+  <div class="container">
+    <div class="page-hero__content">
+      <div class="page-hero__label">Lo que Hacemos</div>
+      <h1 class="page-hero__title">Nuestros Servicios</h1>
+      <p class="page-hero__subtitle">Asesoría en banca de inversión a través de tres líneas de práctica: M&A, Advisory y Fund Management.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUB-NAV -->
+<div class="svc-subnav">
+  <div class="container">
+    <div class="svc-subnav__inner">
+      <a href="#ma"              class="svc-subnav__cat active">M&amp;A</a>
+      <div class="svc-subnav__divider"></div>
+      <a href="#advisory"        class="svc-subnav__cat">Advisory</a>
+      <div class="svc-subnav__divider"></div>
+      <a href="#fund-management" class="svc-subnav__cat">Fund Management</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- M&A                             -->
+<!-- ════════════════════════════════ -->
+<section class="section" id="ma" style="padding-bottom:0;">
+  <div class="container">
+    <div class="cat-header">
+      <div class="cat-header__eyebrow">M&amp;A</div>
+      <h2 class="cat-header__title">Fusiones y Adquisiciones</h2>
+      <p class="cat-header__desc">Asesoría independiente en compras y ventas de empresas. Socios activos en cada mandato, de la estrategia al cierre.</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="svc-grid">
+
+      <!-- Sell-Side -->
+      <div class="svc-card" id="sell-side">
+        <div class="svc-card__num">M&amp;A · 01</div>
+        <h3 class="svc-card__title">Sell-Side Advisory</h3>
+        <p class="svc-card__text">Maximizamos el valor en la venta de su empresa. Diseñamos el proceso, identificamos a los compradores correctos y negociamos cada término — protegiendo siempre su confidencialidad y a sus colaboradores.</p>
+        <ul class="svc-card__list">
+          <li>Posicionamiento y preparación para el mercado</li>
+          <li>Proceso competitivo de compradores</li>
+          <li>Gestión de data room y diligencia</li>
+          <li>Negociación de precio, estructura y cierre</li>
+        </ul>
+        <a href="contact.html" class="svc-card__cta">Iniciar conversación →</a>
+      </div>
+
+      <!-- Buy-Side -->
+      <div class="svc-card" id="buy-side">
+        <div class="svc-card__num">M&amp;A · 02</div>
+        <h3 class="svc-card__title">Buy-Side Advisory</h3>
+        <p class="svc-card__text">Identificamos, evaluamos y estructuramos adquisiciones que crean valor real. Aportamos rigor analítico, acceso a objetivos y disciplina negociadora en cada proceso de compra.</p>
+        <ul class="svc-card__list">
+          <li>Identificación y filtro estratégico de objetivos</li>
+          <li>Modelaje financiero y valuación</li>
+          <li>Estructuración y negociación del deal</li>
+          <li>Coordinación de cierre y asesores</li>
+        </ul>
+        <a href="contact.html" class="svc-card__cta">Iniciar conversación →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-spacer"></div>
+
+<!-- ════════════════════════════════ -->
+<!-- ADVISORY                        -->
+<!-- ════════════════════════════════ -->
+<section class="section" id="advisory" style="padding-top:0;padding-bottom:0;background:var(--bg-light);">
+  <div class="container">
+    <div class="cat-header">
+      <div class="cat-header__eyebrow">Advisory</div>
+      <h2 class="cat-header__title">Asesoría Financiera</h2>
+      <p class="cat-header__desc">Servicios especializados para decisiones de capital, valor y estructura — con independencia y juicio institucional en cada mandato.</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="svc-grid">
+
+      <!-- Valuaciones -->
+      <div class="svc-card" id="valuations" style="background:var(--bg-light);">
+        <div class="svc-card__num">Advisory · 01</div>
+        <h3 class="svc-card__title">Valuaciones</h3>
+        <p class="svc-card__text">Valuaciones independientes y técnicamente rigurosas para transacciones, reportes financieros, propósitos fiscales o planeación estratégica. Diseñadas para resistir el escrutinio de compradores, auditores y reguladores.</p>
+        <ul class="svc-card__list">
+          <li>Valuaciones para M&amp;A y opiniones de equidad</li>
+          <li>Reportes IFRS / US GAAP</li>
+          <li>Valuaciones fiscales y soporte en disputas</li>
+        </ul>
+        <a href="contact.html" class="svc-card__cta">Iniciar conversación →</a>
+      </div>
+
+      <!-- Capital Raising -->
+      <div class="svc-card" id="capital-raising" style="background:var(--bg-light);">
+        <div class="svc-card__num">Advisory · 02</div>
+        <h3 class="svc-card__title">Levantamiento de Capital</h3>
+        <p class="svc-card__text">Conectamos empresas con el capital adecuado — accionario o híbrido — en el momento correcto. Gestionamos el proceso con inversionistas institucionales, fondos de PE y family offices para obtener los mejores términos.</p>
+        <ul class="svc-card__list">
+          <li>Tesis de inversión y materiales para inversionistas</li>
+          <li>Proceso competitivo con fondos y family offices</li>
+          <li>Negociación de term sheet y acuerdos de accionistas</li>
+        </ul>
+        <a href="contact.html" class="svc-card__cta">Iniciar conversación →</a>
+      </div>
+
+      <!-- Restructuring -->
+      <div class="svc-card" id="restructuring" style="background:var(--bg-light);">
+        <div class="svc-card__num">Advisory · 03</div>
+        <h3 class="svc-card__title">Reestructura Financiera</h3>
+        <p class="svc-card__text">Asesoramos a empresas, accionistas y acreedores en situaciones de estrés financiero. Juicio experimentado, soluciones pragmáticas y ejecución discreta en los momentos que más importan.</p>
+        <ul class="svc-card__list">
+          <li>Renegociación de deuda y acuerdos con acreedores</li>
+          <li>Plan de reestructura e implementación</li>
+          <li>Gestión de liquidez y desinversiones de activos</li>
+        </ul>
+        <a href="contact.html" class="svc-card__cta">Iniciar conversación →</a>
+      </div>
+
+      <!-- Post-Merger Integration -->
+      <div class="svc-card" id="pmi" style="background:var(--bg-light);">
+        <div class="svc-card__num">Advisory · 04</div>
+        <h3 class="svc-card__title">Post-Merger Integration</h3>
+        <p class="svc-card__text">El valor de una adquisición se captura después del cierre, no antes. Acompañamos a compradores en la integración operativa y cultural para que las sinergias comprometidas se conviertan en resultados reales.</p>
+        <ul class="svc-card__list">
+          <li>Diagnóstico de brechas y plan de integración</li>
+          <li>Gobierno corporativo y estructura post-adquisición</li>
+          <li>Seguimiento de sinergias y KPIs de integración</li>
+        </ul>
+        <a href="contact.html" class="svc-card__cta">Iniciar conversación →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-spacer"></div>
+
+<!-- ════════════════════════════════ -->
+<!-- FUND MANAGEMENT                 -->
+<!-- ════════════════════════════════ -->
+<section id="fund-management">
+  <div class="fund-hero">
+    <div class="container">
+      <div class="fund-hero__inner">
+        <div>
+          <div class="fund-hero__eyebrow">Fund Management</div>
+          <h2 class="fund-hero__title">Gestión de Fondos y Estructuración de Capital</h2>
+          <p class="fund-hero__desc">Asesoría especializada en la creación, estructuración y gestión de vehículos de inversión — desde fondos de capital privado hasta co-inversiones y mandatos de administración patrimonial.</p>
+          <a href="contact.html" class="btn btn--primary" style="margin-top:32px;display:inline-block;">Contáctenos</a>
+        </div>
+        <div class="fund-pillars">
+          <div class="fund-pillar">
+            <div class="fund-pillar__label">01</div>
+            <div class="fund-pillar__title">Estructuración de Fondos</div>
+            <p class="fund-pillar__desc">Diseño legal, fiscal y operativo de vehículos de inversión — PE, deuda privada, co-inversión o inmobiliario.</p>
+          </div>
+          <div class="fund-pillar">
+            <div class="fund-pillar__label">02</div>
+            <div class="fund-pillar__title">Fundraising Institucional</div>
+            <p class="fund-pillar__desc">Estrategia y ejecución para levantar capital de LPs institucionales, family offices y fondos de fondos.</p>
+          </div>
+          <div class="fund-pillar">
+            <div class="fund-pillar__label">03</div>
+            <div class="fund-pillar__title">Co-Inversión</div>
+            <p class="fund-pillar__desc">Identificación de oportunidades y estructuración de co-inversiones entre fondos y socios estratégicos.</p>
+          </div>
+          <div class="fund-pillar">
+            <div class="fund-pillar__label">04</div>
+            <div class="fund-pillar__title">Gestión Patrimonial</div>
+            <p class="fund-pillar__desc">Asesoría a family offices y patrimonios familiares en estrategia de inversión, asignación de activos y gobierno.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-spacer"></div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-section__content fade-up">
+      <h2 class="cta-section__title">¿Listo para Trabajar Juntos?</h2>
+      <p class="cta-section__text">Todo mandato comienza con una conversación confidencial. Estamos listos para escucharle.</p>
+      <a href="contact.html" class="btn btn--primary">Contáctenos</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a href="index.html" style="display:inline-block;background:rgba(255,255,255,0.92);padding:10px 16px;border-radius:0;margin-bottom:20px;">
+          <img src="images/rw-logo.png" alt="RW Capital y Estrategia" style="height:52px;display:block;">
+        </a>
+        <p class="footer__brand-text">Firma líder de asesoría en banca de inversión independiente con más de 30 años de experiencia atendiendo a clientes nacionales e internacionales.</p>
+      </div>
+      <div>
+        <div class="footer__col-title">Servicios</div>
+        <a href="services.html#ma" class="footer__link">M&amp;A</a>
+        <a href="services.html#advisory" class="footer__link">Advisory</a>
+        <a href="services.html#fund-management" class="footer__link">Fund Management</a>
+      </div>
+      <div>
+        <div class="footer__col-title">Empresa</div>
+        <a href="about.html#our-story" class="footer__link">Nuestra Historia</a>
+        <a href="about.html#team" class="footer__link">Equipo</a>
+        <a href="partners.html" class="footer__link">Partner Program</a>
+        <a href="insights.html" class="footer__link">Publicaciones</a>
+        <a href="case-studies.html" class="footer__link">Casos de Éxito</a>
+      </div>
+      <div>
+        <div class="footer__col-title">Contacto</div>
+        <p class="footer__link">+52 (55) 5080 1300</p>
+        <a href="mailto:contacto@rw.com.mx" class="footer__link">contacto@rw.com.mx</a>
+        <p class="footer__link" style="margin-top:18px;font-size:0.8rem;color:rgba(255,255,255,0.35)">Ciudad de México</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span class="footer__copy">&copy; 2025 RW Capital y Estrategia. Todos los derechos reservados.</span>
+      <div class="footer__social">
+        <a href="https://www.linkedin.com/company/rw-capital-y-estrategia" target="_blank" rel="noopener" class="footer__social-link" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // Highlight subnav on scroll
+  const cats = ['ma','advisory','fund-management'];
+  const navLinks = document.querySelectorAll('.svc-subnav__cat');
+  function updateSubnav() {
+    let active = 'ma';
+    cats.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 160) active = id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+    });
+  }
+  window.addEventListener('scroll', updateSubnav, { passive: true });
+</script>
+</body>
+</html>

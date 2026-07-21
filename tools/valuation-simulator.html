@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Simulador de Valor — RW Capital y Estrategia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#154360;--navy2:#1A5276;--navy3:#0D2535;
+  --gold:#C0392B;--gold2:#A93226;
+  --green:#27ae60;--amber:#f39c12;--red:#e74c3c;
+  --text:#2D2D2D;--text-dim:#6B7280;--text-muted:#9CA3AF;
+  --border:#E5E7EB;--card:#ffffff;
+  --radius:12px;--radius-lg:20px;
+}
+body{background:#F8F7F4;color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;line-height:1.6}
+a{color:var(--navy);text-decoration:none}
+
+/* NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--border)}
+.topbar__logo{display:flex;align-items:center;}
+.topbar__logo img{height:46px;background:rgba(255,255,255,0.92);padding:6px 12px;border-radius:7px;}
+.topbar__back{color:var(--text-dim);font-size:0.85rem;display:flex;align-items:center;gap:6px;transition:color .2s;text-decoration:none;}
+.topbar__back:hover{color:#fff}
+
+/* HERO */
+.hero{text-align:center;padding:80px 40px 60px;max-width:760px;margin:0 auto}
+.hero__label{display:inline-block;background:rgba(196,164,74,0.15);color:var(--gold);border:1px solid rgba(196,164,74,0.3);border-radius:20px;padding:6px 18px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:24px}
+.hero__title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin-bottom:20px}
+.hero__title em{color:var(--gold);font-style:normal}
+.hero__sub{color:var(--text-dim);font-size:1.05rem;max-width:580px;margin:0 auto 40px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all .2s;border:none}
+.btn--gold{background:var(--gold);color:var(--navy)}
+.btn--gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn--outline{background:transparent;color:#fff;border:1.5px solid var(--border)}
+.btn--outline:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.05)}
+
+/* PROGRESS */
+.progress-wrap{max-width:760px;margin:0 auto;padding:0 40px 32px}
+.progress-steps{display:flex;gap:8px;margin-bottom:12px}
+.progress-step{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .4s}
+.progress-step.done{background:var(--gold)}
+.progress-step.active{background:var(--gold);opacity:0.6}
+.progress-label{font-size:0.78rem;color:var(--text-dim)}
+.progress-label strong{color:#fff}
+
+/* FORM */
+.form-wrap{max-width:760px;margin:0 auto;padding:0 40px 80px}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:40px;margin-bottom:24px}
+.section-card__header{margin-bottom:32px}
+.section-card__title{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;margin-bottom:8px}
+.section-card__desc{color:var(--text-dim);font-size:0.9rem}
+.questions-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.question{display:flex;flex-direction:column;gap:8px}
+.question--full{grid-column:1/-1}
+label{font-size:0.82rem;font-weight:600;color:var(--text-dim);letter-spacing:0.05em;text-transform:uppercase}
+select,input[type=number],input[type=text]{width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:0.95rem;outline:none;transition:border .2s;appearance:none}
+select:focus,input:focus{border-color:rgba(196,164,74,0.5)}
+select option{background:#1a3a52;color:#fff}
+
+/* RADIO BUTTONS */
+.radio-group{display:flex;flex-direction:column;gap:8px}
+.radio-opt{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .2s}
+.radio-opt:hover{border-color:rgba(196,164,74,0.4);background:rgba(196,164,74,0.05)}
+.radio-opt.selected{border-color:var(--gold);background:rgba(196,164,74,0.1)}
+.radio-opt input{display:none}
+.radio-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.radio-opt.selected .radio-dot{border-color:var(--gold);background:var(--gold)}
+.radio-opt.selected .radio-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--navy)}
+.radio-opt span{font-size:0.9rem;color:var(--text-dim)}
+.radio-opt.selected span{color:#fff}
+
+/* RANGE SLIDER */
+.slider-wrap{display:flex;flex-direction:column;gap:8px}
+.slider-val{font-size:1.4rem;font-weight:700;color:var(--gold)}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid var(--navy)}
+
+/* NAV BUTTONS */
+.form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px}
+
+/* RESULTS */
+.results{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+.results-header{text-align:center;margin-bottom:60px}
+.score-ring{width:180px;height:180px;margin:0 auto 32px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring__bg{fill:none;stroke:var(--border);stroke-width:10}
+.score-ring__fill{fill:none;stroke:var(--gold);stroke-width:10;stroke-linecap:round;stroke-dasharray:502;stroke-dashoffset:502;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
+.score-ring__text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-ring__number{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1}
+.score-ring__label{font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px}
+.score-title{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:8px}
+.score-subtitle{color:var(--text-dim);font-size:0.95rem}
+
+/* MULTIPLE BOX */
+.multiple-box{background:linear-gradient(135deg,rgba(196,164,74,0.15),rgba(196,164,74,0.05));border:1px solid rgba(196,164,74,0.3);border-radius:var(--radius-lg);padding:36px;text-align:center;margin-bottom:48px}
+.multiple-box__label{font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.multiple-box__value{font-family:'Playfair Display',serif;font-size:3rem;color:#fff;margin-bottom:8px}
+.multiple-box__note{font-size:0.82rem;color:var(--text-dim);max-width:480px;margin:0 auto}
+
+/* DRIVER CARDS */
+.drivers-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px}
+.driver-col__title{font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px}
+.driver-col--pos .driver-col__title{color:var(--green)}
+.driver-col--neg .driver-col__title{color:var(--amber)}
+.driver-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;font-size:0.88rem}
+.driver-item--pos{border-left:3px solid var(--green)}
+.driver-item--neg{border-left:3px solid var(--amber)}
+.driver-icon{font-size:1rem;flex-shrink:0}
+
+/* CHARTS */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px}
+.chart-card__title{font-size:0.82rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:20px}
+.chart-card canvas{max-height:260px}
+
+/* SECTION DISCLAIMER */
+.disclaimer{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;font-size:0.82rem;color:var(--text-dim);margin-bottom:40px}
+
+/* CTA */
+.results-cta{text-align:center;background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid var(--border);border-radius:var(--radius-lg);padding:52px 40px}
+.results-cta h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:12px}
+.results-cta p{color:var(--text-dim);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* BAR CHART CUSTOM */
+.bar-chart-wrap{display:flex;flex-direction:column;gap:12px}
+.bar-row{display:grid;grid-template-columns:160px 1fr 60px;align-items:center;gap:12px}
+.bar-row__label{font-size:0.8rem;color:var(--text-dim);text-align:right}
+.bar-track{height:8px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.bar-fill--pos{background:linear-gradient(90deg,var(--green),#2ecc71)}
+.bar-fill--neg{background:linear-gradient(90deg,var(--amber),#e67e22)}
+.bar-row__sign{font-size:0.78rem;font-weight:700;text-align:right}
+.bar-row__sign--pos{color:var(--green)}
+.bar-row__sign--neg{color:var(--amber)}
+
+/* HIDDEN */
+.hidden{display:none!important}
+.page{display:none}
+.page.active{display:block}
+
+@media(max-width:640px){
+  .questions-grid{grid-template-columns:1fr}
+  .drivers-grid,.charts-grid{grid-template-columns:1fr}
+  .topbar{padding:16px 20px}
+  .form-wrap,.progress-wrap{padding-left:20px;padding-right:20px}
+  .hero{padding:60px 20px 40px}
+  .results{padding:20px 20px 60px}
+  .bar-row{grid-template-columns:100px 1fr 48px}
+  .bar-row__label{font-size:0.72rem}
+}
+
+/* ===== RW BRAND LIGHT THEME ===== */
+.topbar{background:#fff;border-bottom:1px solid #E5E7EB;}
+.topbar__back{color:#6B7280;}
+
+/* Hero section keeps dark navy branding */
+.hero{background:linear-gradient(140deg,#0D2535 0%,#1A5276 60%,#154360 100%);max-width:100%;padding:80px 40px 64px;position:relative;}
+.hero__label{background:rgba(192,57,43,0.12);color:#C0392B;border-color:rgba(192,57,43,0.3);}
+.hero__title{color:#fff;}
+.hero__title em{color:#C0392B;}
+.hero__sub{color:rgba(255,255,255,0.72);}
+.btn--gold{background:#154360;color:#fff;}
+.btn--gold:hover{background:#1A5276;transform:translateY(-1px);}
+.btn--outline{background:transparent;color:rgba(255,255,255,0.75);border:1.5px solid rgba(255,255,255,0.25);}
+.btn--outline:hover{background:rgba(255,255,255,0.08);color:#fff;}
+
+/* Progress bar */
+.progress-wrap{background:#fff;border-bottom:1px solid #E5E7EB;padding-top:20px;padding-bottom:20px;}
+.progress-step.done,.progress-step.active{background:#154360;}
+.progress-step.active{opacity:0.5;}
+.progress-label{color:#6B7280;}
+.progress-label strong{color:#2D2D2D;}
+
+/* Form cards */
+.section-card{background:#fff;border-color:#E5E7EB;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+.section-card__title{color:#154360;}
+.section-card__desc{color:#6B7280;}
+label{color:#6B7280;}
+select,input[type=number],input[type=text]{background:#fff;border-color:#E5E7EB;color:#2D2D2D;}
+select option{background:#fff;color:#2D2D2D;}
+select:focus,input:focus{border-color:rgba(21,67,96,0.5);box-shadow:0 0 0 3px rgba(21,67,96,0.08);}
+
+/* Radio buttons */
+.radio-opt{background:#fff;border-color:#E5E7EB;}
+.radio-opt:hover{border-color:rgba(21,67,96,0.35);background:rgba(21,67,96,0.03);}
+.radio-opt.selected{border-color:#154360;background:rgba(21,67,96,0.06);}
+.radio-dot{border-color:#D1D5DB;}
+.radio-opt.selected .radio-dot{border-color:#154360;background:#154360;}
+.radio-opt.selected .radio-dot::after{background:#fff;}
+.radio-opt span{color:#6B7280;}
+.radio-opt.selected span{color:#154360;}
+.slider-val{color:#154360;}
+input[type=range]::-webkit-slider-thumb{background:#154360;border-color:#F8F7F4;}
+
+/* Results */
+.score-ring__fill{stroke:#C0392B;}
+.score-ring__number{color:#154360;}
+.score-ring__label{color:#6B7280;}
+.score-title{color:#154360;}
+.score-subtitle{color:#6B7280;}
+.multiple-box{background:linear-gradient(135deg,rgba(21,67,96,0.07),rgba(26,82,118,0.03));border-color:rgba(21,67,96,0.18);}
+.multiple-box__label{color:#C0392B;}
+.multiple-box__value{color:#154360;}
+.multiple-box__note{color:#6B7280;}
+.driver-col--pos .driver-col__title{color:#27ae60;}
+.driver-col--neg .driver-col__title{color:#f39c12;}
+.driver-item{background:#fff;border-color:#E5E7EB;}
+.chart-card{background:#fff;border-color:#E5E7EB;}
+.chart-card__title{color:#6B7280;}
+.disclaimer{background:#F8F7F4;border-color:#E5E7EB;color:#9CA3AF;}
+.bar-row__label{color:#6B7280;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="../herramientas.html" class="topbar__logo">
+    <img src="../images/rw-logo.png" alt="RW Capital y Estrategia">
+  </a>
+  <a href="../herramientas.html" class="topbar__back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Volver a Herramientas
+  </a>
+</div>
+
+<!-- PAGE: LANDING -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <div class="hero__label">Herramienta Educativa</div>
+    <h1 class="hero__title">¿Qué determina el <em>valor</em> de tu empresa?</h1>
+    <p class="hero__sub">Descubre los factores que los inversionistas y compradores evalúan para determinar la valuación. Obtén un diagnóstico personalizado y un rango indicativo de múltiplos.</p>
+    <button class="btn btn--gold" onclick="startAssessment()">
+      Iniciar Evaluación
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:700px;margin:0 auto 80px;padding:0 40px">
+    <div style="text-align:center;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="font-size:1.8rem;margin-bottom:8px">📊</div>
+      <div style="font-size:0.8rem;color:var(--text-dim)">Resultado personalizado</div>
+    </div>
+    <div style="text-align:center;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="font-size:1.8rem;margin-bottom:8px">⏱</div>
+      <div style="font-size:0.8rem;color:var(--text-dim)">~8 minutos</div>
+    </div>
+    <div style="text-align:center;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="font-size:1.8rem;margin-bottom:8px">🔒</div>
+      <div style="font-size:0.8rem;color:var(--text-dim)">Estrictamente confidencial</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: ASSESSMENT -->
+<div class="page" id="page-assessment">
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="progress-step active" id="ps0"></div>
+      <div class="progress-step" id="ps1"></div>
+      <div class="progress-step" id="ps2"></div>
+      <div class="progress-step" id="ps3"></div>
+    </div>
+    <div class="progress-label">Sección <strong id="step-num">1</strong> de 4 — <strong id="step-name">Empresa</strong></div>
+  </div>
+
+  <div class="form-wrap">
+
+    <!-- STEP 0: COMPANY -->
+    <div id="step-0" class="step-content">
+      <div class="section-card">
+        <div class="section-card__header">
+          <div class="section-card__title">Datos de la Empresa</div>
+          <div class="section-card__desc">Información básica para contextualizar la evaluación.</div>
+        </div>
+        <div class="questions-grid">
+          <div class="question">
+            <label>Industria</label>
+            <select id="q-industry">
+              <option value="">Seleccionar...</option>
+              <option value="tech">Tecnología / Software</option>
+              <option value="financial">Servicios Financieros</option>
+              <option value="industrial">Industrial / Manufactura</option>
+              <option value="healthcare">Salud</option>
+              <option value="consumer">Consumo / Retail</option>
+              <option value="education">Educación</option>
+              <option value="services">Servicios Empresariales</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+          <div class="question">
+            <label>País</label>
+            <select id="q-country">
+              <option value="">Seleccionar...</option>
+              <option value="mx">México</option>
+              <option value="latam">Latinoamérica</option>
+              <option value="us">Estados Unidos</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+          <div class="question">
+            <label>Ingresos Anuales (USD)</label>
+            <select id="q-revenue">
+              <option value="">Seleccionar...</option>
+              <option value="1">Menos de $5M</option>
+              <option value="2">$5M – $15M</option>
+              <option value="3">$15M – $50M</option>
+              <option value="4">$50M – $150M</option>
+              <option value="5">Más de $150M</option>
+            </select>
+          </div>
+          <div class="question">
+            <label>EBITDA Margin (%)</label>
+            <div class="slider-wrap">
+              <div class="slider-val" id="margin-val">15%</div>
+              <input type="range" id="q-margin" min="0" max="50" value="15" oninput="document.getElementById('margin-val').textContent=this.value+'%'"/>
+            </div>
+          </div>
+          <div class="question question--full">
+            <label>Tasa de Crecimiento Anual (%)</label>
+            <div class="slider-wrap">
+              <div class="slider-val" id="growth-val">15%</div>
+              <input type="range" id="q-growth" min="-20" max="100" value="15" oninput="document.getElementById('growth-val').textContent=this.value+'%'"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <span></span>
+        <button class="btn btn--gold" onclick="nextStep(1)">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 1: BUSINESS QUALITY -->
+    <div id="step-1" class="step-content hidden">
+      <div class="section-card">
+        <div class="section-card__header">
+          <div class="section-card__title">Calidad del Negocio</div>
+          <div class="section-card__desc">Estos factores determinan la estabilidad y predictibilidad de los ingresos.</div>
+        </div>
+        <div class="questions-grid">
+
+          <div class="question">
+            <label>Ingresos Recurrentes (%)</label>
+            <div class="slider-wrap">
+              <div class="slider-val" id="recurring-val">40%</div>
+              <input type="range" id="q-recurring" min="0" max="100" value="40" oninput="document.getElementById('recurring-val').textContent=this.value+'%'"/>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Concentración de Clientes</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-concentration')"><input type="radio" name="q-concentration" value="3"/><div class="radio-dot"></div><span>Ningún cliente > 10% de ingresos</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-concentration')"><input type="radio" name="q-concentration" value="2"/><div class="radio-dot"></div><span>Cliente mayor: 10–25% de ingresos</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-concentration')"><input type="radio" name="q-concentration" value="1"/><div class="radio-dot"></div><span>Cliente mayor: 25–50% de ingresos</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-concentration')"><input type="radio" name="q-concentration" value="0"/><div class="radio-dot"></div><span>Cliente mayor: más del 50%</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Margen Bruto (%)</label>
+            <div class="slider-wrap">
+              <div class="slider-val" id="gross-val">45%</div>
+              <input type="range" id="q-gross" min="0" max="90" value="45" oninput="document.getElementById('gross-val').textContent=this.value+'%'"/>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Duración Promedio de Contratos</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-contracts')"><input type="radio" name="q-contracts" value="3"/><div class="radio-dot"></div><span>Contratos plurianuales</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-contracts')"><input type="radio" name="q-contracts" value="2"/><div class="radio-dot"></div><span>Contratos anuales renovables</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-contracts')"><input type="radio" name="q-contracts" value="1"/><div class="radio-dot"></div><span>Contratos de corto plazo (&lt;1 año)</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-contracts')"><input type="radio" name="q-contracts" value="0"/><div class="radio-dot"></div><span>Sin contratos formales</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Retención de Clientes (anual)</label>
+            <div class="slider-wrap">
+              <div class="slider-val" id="retention-val">80%</div>
+              <input type="range" id="q-retention" min="0" max="100" value="80" oninput="document.getElementById('retention-val').textContent=this.value+'%'"/>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Propiedad Intelectual / Tecnología Propia</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-ip')"><input type="radio" name="q-ip" value="3"/><div class="radio-dot"></div><span>IP propietaria significativa y protegida</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-ip')"><input type="radio" name="q-ip" value="2"/><div class="radio-dot"></div><span>Tecnología propia sin protección formal</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-ip')"><input type="radio" name="q-ip" value="1"/><div class="radio-dot"></div><span>Algunos activos de conocimiento</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-ip')"><input type="radio" name="q-ip" value="0"/><div class="radio-dot"></div><span>Sin IP diferenciada</span></label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn--outline" onclick="nextStep(0)">← Anterior</button>
+        <button class="btn btn--gold" onclick="nextStep(2)">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 2: OPERATIONS -->
+    <div id="step-2" class="step-content hidden">
+      <div class="section-card">
+        <div class="section-card__header">
+          <div class="section-card__title">Operaciones y Gestión</div>
+          <div class="section-card__desc">La solidez operativa reduce el riesgo percibido por los compradores.</div>
+        </div>
+        <div class="questions-grid">
+
+          <div class="question">
+            <label>Dependencia del Fundador</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-founder')"><input type="radio" name="q-founder" value="3"/><div class="radio-dot"></div><span>Equipo directivo independiente — el negocio funciona sin mí</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-founder')"><input type="radio" name="q-founder" value="2"/><div class="radio-dot"></div><span>Equipo fuerte, pero yo soy clave en ventas o relaciones</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-founder')"><input type="radio" name="q-founder" value="1"/><div class="radio-dot"></div><span>Soy clave en múltiples funciones críticas</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-founder')"><input type="radio" name="q-founder" value="0"/><div class="radio-dot"></div><span>El negocio depende completamente de mí</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Calidad del Equipo Directivo</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-mgmt')"><input type="radio" name="q-mgmt" value="3"/><div class="radio-dot"></div><span>Equipo experimentado con track record demostrable</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-mgmt')"><input type="radio" name="q-mgmt" value="2"/><div class="radio-dot"></div><span>Buen equipo en desarrollo</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-mgmt')"><input type="radio" name="q-mgmt" value="1"/><div class="radio-dot"></div><span>Equipo con algunas brechas importantes</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-mgmt')"><input type="radio" name="q-mgmt" value="0"/><div class="radio-dot"></div><span>Equipo muy reducido o inexperiente</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Reportes Financieros</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-reporting')"><input type="radio" name="q-reporting" value="3"/><div class="radio-dot"></div><span>Estados auditados + reportes mensuales + ERP</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-reporting')"><input type="radio" name="q-reporting" value="2"/><div class="radio-dot"></div><span>Reportes mensuales confiables, sin auditoría</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-reporting')"><input type="radio" name="q-reporting" value="1"/><div class="radio-dot"></div><span>Reportes trimestrales básicos</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-reporting')"><input type="radio" name="q-reporting" value="0"/><div class="radio-dot"></div><span>Sin reportes formales regulares</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Sistemas ERP / Contables</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-erp')"><input type="radio" name="q-erp" value="2"/><div class="radio-dot"></div><span>ERP implementado y utilizado</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-erp')"><input type="radio" name="q-erp" value="1"/><div class="radio-dot"></div><span>Software contable básico</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-erp')"><input type="radio" name="q-erp" value="0"/><div class="radio-dot"></div><span>Sistemas manuales o en Excel</span></label>
+            </div>
+          </div>
+
+          <div class="question question--full">
+            <label>Seguimiento de KPIs y Proyecciones</label>
+            <div class="radio-group" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <label class="radio-opt" onclick="selectRadio(this,'q-kpi')"><input type="radio" name="q-kpi" value="3"/><div class="radio-dot"></div><span>Dashboard de KPIs + proyecciones formales</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-kpi')"><input type="radio" name="q-kpi" value="2"/><div class="radio-dot"></div><span>KPIs monitoreados pero sin proyecciones</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-kpi')"><input type="radio" name="q-kpi" value="1"/><div class="radio-dot"></div><span>Seguimiento informal de métricas</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-kpi')"><input type="radio" name="q-kpi" value="0"/><div class="radio-dot"></div><span>Sin seguimiento sistemático</span></label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn--outline" onclick="nextStep(1)">← Anterior</button>
+        <button class="btn btn--gold" onclick="nextStep(3)">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 3: MARKET POSITION -->
+    <div id="step-3" class="step-content hidden">
+      <div class="section-card">
+        <div class="section-card__header">
+          <div class="section-card__title">Posición de Mercado</div>
+          <div class="section-card__desc">El contexto competitivo y el potencial de crecimiento afectan directamente la valuación.</div>
+        </div>
+        <div class="questions-grid">
+
+          <div class="question">
+            <label>Crecimiento del Mercado</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-mktgrowth')"><input type="radio" name="q-mktgrowth" value="3"/><div class="radio-dot"></div><span>Mercado de alto crecimiento (+15% anual)</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-mktgrowth')"><input type="radio" name="q-mktgrowth" value="2"/><div class="radio-dot"></div><span>Crecimiento moderado (5–15%)</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-mktgrowth')"><input type="radio" name="q-mktgrowth" value="1"/><div class="radio-dot"></div><span>Mercado maduro (0–5%)</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-mktgrowth')"><input type="radio" name="q-mktgrowth" value="0"/><div class="radio-dot"></div><span>Mercado en declive</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Diferenciación Competitiva</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-diff')"><input type="radio" name="q-diff" value="3"/><div class="radio-dot"></div><span>Posición dominante o nicho muy diferenciado</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-diff')"><input type="radio" name="q-diff" value="2"/><div class="radio-dot"></div><span>Ventajas claras vs. competencia</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-diff')"><input type="radio" name="q-diff" value="1"/><div class="radio-dot"></div><span>Diferenciación limitada</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-diff')"><input type="radio" name="q-diff" value="0"/><div class="radio-dot"></div><span>Mercado muy competido, producto commodity</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Diversificación Geográfica</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-geo')"><input type="radio" name="q-geo" value="3"/><div class="radio-dot"></div><span>Presencia en múltiples países</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-geo')"><input type="radio" name="q-geo" value="2"/><div class="radio-dot"></div><span>2–3 regiones o estados</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-geo')"><input type="radio" name="q-geo" value="1"/><div class="radio-dot"></div><span>Una ciudad o región</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-geo')"><input type="radio" name="q-geo" value="0"/><div class="radio-dot"></div><span>Mercado local muy concentrado</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Presencia Internacional</label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="selectRadio(this,'q-intl')"><input type="radio" name="q-intl" value="2"/><div class="radio-dot"></div><span>Clientes o ingresos internacionales significativos</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-intl')"><input type="radio" name="q-intl" value="1"/><div class="radio-dot"></div><span>Algunos ingresos internacionales</span></label>
+              <label class="radio-opt" onclick="selectRadio(this,'q-intl')"><input type="radio" name="q-intl" value="0"/><div class="radio-dot"></div><span>Solo mercado doméstico</span></label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn--outline" onclick="nextStep(2)">← Anterior</button>
+        <button class="btn btn--gold" onclick="calculateResults()">Ver Resultados →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAGE: RESULTS -->
+<div class="page" id="page-results">
+  <div class="results" id="results-container">
+
+    <div class="results-header">
+      <div class="score-ring">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle class="score-ring__bg" cx="90" cy="90" r="80"/>
+          <circle class="score-ring__fill" id="score-arc" cx="90" cy="90" r="80"/>
+        </svg>
+        <div class="score-ring__text">
+          <div class="score-ring__number" id="score-display">0</div>
+          <div class="score-ring__label">/ 100</div>
+        </div>
+      </div>
+      <h1 class="score-title">Atractivo de Valuación</h1>
+      <p class="score-subtitle" id="score-band-label"></p>
+    </div>
+
+    <div class="multiple-box">
+      <div class="multiple-box__label">Rango Indicativo de Múltiplo EBITDA</div>
+      <div class="multiple-box__value" id="multiple-display">—</div>
+      <div class="multiple-box__note">Estimación educativa únicamente. La valuación real depende de condiciones de mercado, dinámica de compradores, estructura de la transacción y due diligence.</div>
+    </div>
+
+    <div class="disclaimer">
+      <strong style="color:rgba(255,255,255,0.7)">Nota importante:</strong> Esta herramienta es de carácter educativo. Los resultados son indicativos y no constituyen una opinión de valor. Para una valuación formal, contacta a RW Capital y Estrategia.
+    </div>
+
+    <div class="drivers-grid">
+      <div class="driver-col driver-col--pos">
+        <div class="driver-col__title">✅ Factores Positivos</div>
+        <div id="positive-drivers"></div>
+      </div>
+      <div class="driver-col driver-col--neg">
+        <div class="driver-col__title">⚠ Oportunidades de Mejora</div>
+        <div id="negative-drivers"></div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-card__title">Perfil de Valor — Radar</div>
+        <canvas id="radarChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card__title">Impacto por Factor</div>
+        <div class="bar-chart-wrap" id="bar-chart-wrap"></div>
+      </div>
+    </div>
+
+    <div class="results-cta">
+      <h2>¿Listo para una conversación más profunda?</h2>
+      <p>Nuestro equipo puede analizar tu empresa con mayor detalle y discutir tus opciones estratégicas de forma confidencial.</p>
+      <div class="cta-btns">
+        <a href="../contact.html" class="btn btn--gold">Agendar una Conversación Confidencial</a>
+        <button class="btn btn--outline" onclick="restartAssessment()">Reiniciar Evaluación</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ---- STATE ----
+let currentStep = 0;
+const stepNames = ['Empresa','Calidad del Negocio','Operaciones','Posición de Mercado'];
+
+function selectRadio(el, name) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => r.closest('.radio-opt').classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startAssessment() {
+  showPage('page-assessment');
+  goToStep(0);
+}
+
+function restartAssessment() {
+  currentStep = 0;
+  showPage('page-landing');
+}
+
+function goToStep(n) {
+  document.querySelectorAll('.step-content').forEach(s => s.classList.add('hidden'));
+  document.getElementById(`step-${n}`).classList.remove('hidden');
+  // update progress
+  for(let i=0;i<4;i++){
+    const el = document.getElementById(`ps${i}`);
+    el.classList.remove('done','active');
+    if(i < n) el.classList.add('done');
+    else if(i === n) el.classList.add('active');
+  }
+  document.getElementById('step-num').textContent = n+1;
+  document.getElementById('step-name').textContent = stepNames[n];
+  currentStep = n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextStep(n) { goToStep(n); }
+
+function getRadioVal(name, fallback=1) {
+  const checked = document.querySelector(`[name="${name}"]:checked`);
+  return checked ? parseInt(checked.value) : fallback;
+}
+
+function calculateResults() {
+  // --- gather inputs ---
+  const industry = document.getElementById('q-industry').value;
+  const margin = parseInt(document.getElementById('q-margin').value);
+  const growth = parseInt(document.getElementById('q-growth').value);
+  const recurring = parseInt(document.getElementById('q-recurring').value);
+  const retention = parseInt(document.getElementById('q-retention').value);
+  const gross = parseInt(document.getElementById('q-gross').value);
+  const concentration = getRadioVal('q-concentration');
+  const contracts = getRadioVal('q-contracts');
+  const ip = getRadioVal('q-ip');
+  const founder = getRadioVal('q-founder');
+  const mgmt = getRadioVal('q-mgmt');
+  const reporting = getRadioVal('q-reporting');
+  const erp = getRadioVal('q-erp');
+  const kpi = getRadioVal('q-kpi');
+  const mktgrowth = getRadioVal('q-mktgrowth');
+  const diff = getRadioVal('q-diff');
+  const geo = getRadioVal('q-geo');
+  const intl = getRadioVal('q-intl');
+
+  // --- SCORING (out of 100) ---
+  // Financial Quality (25 pts)
+  const fq_margin = Math.min(margin / 50 * 10, 10); // 0-10
+  const fq_growth = Math.min(Math.max((growth + 20) / 120 * 10, 0), 10); // 0-10
+  const fq_gross = Math.min(gross / 90 * 5, 5); // 0-5
+  const financialScore = fq_margin + fq_growth + fq_gross; // 0-25
+
+  // Business Quality (25 pts)
+  const bq_recurring = recurring / 100 * 8; // 0-8
+  const bq_retention = retention / 100 * 5; // 0-5
+  const bq_concentration = concentration / 3 * 5; // 0-5
+  const bq_contracts = contracts / 3 * 4; // 0-4
+  const bq_ip = ip / 3 * 3; // 0-3
+  const businessScore = bq_recurring + bq_retention + bq_concentration + bq_contracts + bq_ip; // 0-25
+
+  // Operations (25 pts)
+  const op_founder = founder / 3 * 10; // 0-10
+  const op_mgmt = mgmt / 3 * 7; // 0-7
+  const op_reporting = reporting / 3 * 5; // 0-5
+  const op_erp = erp / 2 * 2; // 0-2
+  const op_kpi = kpi / 3 * 1; // 0-1
+  const opsScore = op_founder + op_mgmt + op_reporting + op_erp + op_kpi; // 0-25
+
+  // Market (25 pts)
+  const mk_growth = mktgrowth / 3 * 10; // 0-10
+  const mk_diff = diff / 3 * 9; // 0-9
+  const mk_geo = geo / 3 * 4; // 0-4
+  const mk_intl = intl / 2 * 2; // 0-2
+  const marketScore = mk_growth + mk_diff + mk_geo + mk_intl; // 0-25
+
+  const totalScore = Math.round(financialScore + businessScore + opsScore + marketScore);
+
+  // --- MULTIPLE RANGE ---
+  let baseMin, baseMax;
+  const industryBase = { tech:9, financial:7, industrial:6, healthcare:8, consumer:6, education:7, services:6, other:5 };
+  const base = industryBase[industry] || 6;
+  if(totalScore >= 85) { baseMin = base+1; baseMax = base+3; }
+  else if(totalScore >= 70) { baseMin = base-1; baseMax = base+1; }
+  else if(totalScore >= 50) { baseMin = base-2; baseMax = base; }
+  else { baseMin = base-3; baseMax = base-1; }
+  baseMin = Math.max(baseMin, 2);
+
+  // --- DRIVERS ---
+  const drivers = [
+    { label:'Ingresos recurrentes', pos: recurring >= 60, posText:'Ingresos recurrentes sólidos ('+recurring+'%)', negText:'Baja proporción de ingresos recurrentes ('+recurring+'%)' },
+    { label:'Crecimiento de ingresos', pos: growth >= 15, posText:'Crecimiento acelerado ('+growth+'%)', negText:'Crecimiento limitado ('+growth+'%)' },
+    { label:'Margen EBITDA', pos: margin >= 20, posText:'Márgenes EBITDA saludables ('+margin+'%)', negText:'Márgenes EBITDA ajustados ('+margin+'%)' },
+    { label:'Retención de clientes', pos: retention >= 85, posText:'Alta retención de clientes ('+retention+'%)', negText:'Retención de clientes mejorable ('+retention+'%)' },
+    { label:'Concentración de clientes', pos: concentration >= 2, posText:'Base de clientes diversificada', negText:'Alta concentración de clientes' },
+    { label:'Contratos', pos: contracts >= 2, posText:'Contratos formales y duraderos', negText:'Sin contratos formales o de corto plazo' },
+    { label:'Dependencia del fundador', pos: founder >= 2, posText:'Equipo directivo independiente del fundador', negText:'Alta dependencia del fundador' },
+    { label:'Equipo directivo', pos: mgmt >= 2, posText:'Equipo directivo experimentado', negText:'Equipo directivo en desarrollo' },
+    { label:'Reportes financieros', pos: reporting >= 2, posText:'Reportes financieros de alta calidad', negText:'Calidad de reportes financieros mejorable' },
+    { label:'Diferenciación', pos: diff >= 2, posText:'Diferenciación competitiva clara', negText:'Diferenciación competitiva limitada' },
+    { label:'Presencia internacional', pos: intl >= 1, posText:'Diversificación geográfica internacional', negText:'Sin presencia internacional' },
+    { label:'IP y tecnología propia', pos: ip >= 2, posText:'Propiedad intelectual protegida', negText:'Sin IP diferenciada' },
+  ];
+
+  const positives = drivers.filter(d => d.pos).slice(0,5);
+  const negatives = drivers.filter(d => !d.pos).slice(0,5);
+
+  // --- RADAR DATA ---
+  const radarData = [
+    Math.round(financialScore / 25 * 100),
+    Math.round(businessScore / 25 * 100),
+    Math.round(opsScore / 25 * 100),
+    Math.round(marketScore / 25 * 100),
+    Math.round((bq_recurring/8 + bq_contracts/4) / 2 * 100),
+    Math.round((mgmt/7 + op_founder/10) / 2 * 25 / 25 * 100),
+  ];
+
+  showResults(totalScore, baseMin, baseMax, positives, negatives, radarData, [
+    { label:'Ingresos Recurrentes', val: bq_recurring/8, pos: recurring>=60 },
+    { label:'Crecimiento', val: fq_growth/10, pos: growth>=15 },
+    { label:'Márgenes EBITDA', val: fq_margin/10, pos: margin>=20 },
+    { label:'Equipo Directivo', val: op_mgmt/7, pos: mgmt>=2 },
+    { label:'Reportes Financieros', val: op_reporting/5, pos: reporting>=2 },
+    { label:'Dependencia Fundador', val: op_founder/10, pos: founder>=2 },
+    { label:'Diferenciación', val: mk_diff/9, pos: diff>=2 },
+    { label:'Diversificación Clientes', val: bq_concentration/5, pos: concentration>=2 },
+  ]);
+}
+
+function showResults(score, multMin, multMax, positives, negatives, radarData, barData) {
+  showPage('page-results');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // animate score
+  setTimeout(() => {
+    let n = 0;
+    const interval = setInterval(() => {
+      n = Math.min(n + Math.ceil(score/40), score);
+      document.getElementById('score-display').textContent = n;
+      if(n >= score) clearInterval(interval);
+    }, 30);
+    // arc
+    const circumference = 2 * Math.PI * 80;
+    const offset = circumference - (score / 100) * circumference;
+    document.getElementById('score-arc').style.strokeDashoffset = offset;
+    // color arc
+    const color = score >= 85 ? '#27ae60' : score >= 70 ? '#C4A44A' : score >= 50 ? '#f39c12' : '#e74c3c';
+    document.getElementById('score-arc').style.stroke = color;
+  }, 200);
+
+  // band label
+  const bands = [{min:85,label:'Excelente — Muy atractivo para compradores e inversionistas'},{min:70,label:'Sólido — Negocio atractivo con áreas de mejora'},{min:50,label:'En Desarrollo — Potencial claro, oportunidades de fortalecimiento'},{min:0,label:'Etapa Temprana — Requiere preparación antes de una transacción'}];
+  const band = bands.find(b => score >= b.min);
+  document.getElementById('score-band-label').textContent = band.label;
+
+  document.getElementById('multiple-display').textContent = `${multMin.toFixed(1)}x – ${multMax.toFixed(1)}x EBITDA`;
+
+  // drivers
+  document.getElementById('positive-drivers').innerHTML = positives.map(d => `<div class="driver-item driver-item--pos"><span class="driver-icon">✅</span>${d.posText}</div>`).join('');
+  document.getElementById('negative-drivers').innerHTML = negatives.map(d => `<div class="driver-item driver-item--neg"><span class="driver-icon">⚠</span>${d.negText}</div>`).join('');
+
+  // radar chart
+  if(window._radarChart) window._radarChart.destroy();
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  window._radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Calidad\nFinanciera','Calidad\ndel Negocio','Operaciones','Mercado','Predictibilidad','Gestión'],
+      datasets: [{
+        data: radarData,
+        backgroundColor: 'rgba(196,164,74,0.15)',
+        borderColor: 'rgba(196,164,74,0.8)',
+        borderWidth: 2,
+        pointBackgroundColor: 'rgba(196,164,74,1)',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          angleLines: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { display: false },
+          pointLabels: { color: '#6B7280', font: { size: 10, family: 'Inter' } }
+        }
+      }
+    }
+  });
+
+  // bar chart
+  const barWrap = document.getElementById('bar-chart-wrap');
+  barWrap.innerHTML = barData.map(d => `
+    <div class="bar-row">
+      <div class="bar-row__label">${d.label}</div>
+      <div class="bar-track"><div class="bar-fill ${d.pos?'bar-fill--pos':'bar-fill--neg'}" style="width:0" data-target="${Math.round(d.val*100)}%"></div></div>
+      <div class="bar-row__sign ${d.pos?'bar-row__sign--pos':'bar-row__sign--neg'}">${d.pos?'+++':'- -'}</div>
+    </div>`).join('');
+  setTimeout(() => {
+    barWrap.querySelectorAll('.bar-fill').forEach(el => {
+      el.style.width = el.dataset.target;
+    });
+  }, 400);
+}
+</script>
+</body>
+</html>
