@@ -32,7 +32,7 @@ navMenu?.querySelectorAll('a').forEach(link => {
 document.querySelectorAll('.nav__item--has-dropdown').forEach(item => {
   const link = item.querySelector('.nav__link');
   link?.addEventListener('click', e => {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1100) {
       e.preventDefault();
       item.classList.toggle('open');
     }
