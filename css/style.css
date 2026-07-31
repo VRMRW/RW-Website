@@ -96,7 +96,8 @@ p  { line-height: 1.75; }
 /* Hide inline SVG chevrons — CSS ::after handles the indicator */
 .nav__item--has-dropdown .nav__link > svg { display: none; }
 
-.nav__dropdown { position: absolute; top: calc(100% + 10px); left: 0; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); min-width: 230px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: var(--transition); border-top: 3px solid var(--accent); z-index: 100; }
+.nav__dropdown { position: absolute; top: 100%; left: 0; padding-top: 10px; background: transparent; min-width: 230px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: var(--transition); z-index: 100; }
+.nav__dropdown::before { content: ''; position: absolute; top: 10px; left: 0; right: 0; bottom: 0; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border-top: 3px solid var(--accent); z-index: -1; }
 .nav__item:hover .nav__dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
 
 .nav__dropdown-link { display: block; padding: 11px 20px; color: var(--text); font-size: 0.875rem; transition: var(--transition); }
